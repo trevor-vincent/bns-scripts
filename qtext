@@ -1,0 +1,11 @@
+#!/bin/bash                                                                                                                                                                                                                                    
+echo "JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) RUNNAME"
+echo "--------------------------------------------------------------"
+squeue -u tvincent | sed -e '1,1d' > temp.txt
+while read -u10 p ; do
+JOBID="$(echo $p | cut -c-7)"
+#echo ${JOBID}                                                                                                                                                                                                                                 
+RUNDIR=$(scontrol show job -dd ${JOBID} | grep JobName | cut -d '=' -f3)
+#echo $RUNDIR                                                                                                                                                                                                                                  
+echo "$p $RUNDIR"
+done 10< temp.txt

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+module rm intelmpi/5.0.3.048 && module load openmpi extras paraview
+
+if [ ! -d "./PNGsForRun/" ]; then
+   mkdir PNGsForRun	  
+fi
+
+current_path=${PWD}
+
+if [ ! -d "./Run/HyVolumeData/" ]; then
+   echo "Directory ${PWD}/Run/HyVolumeData does not exist, exiting..."
+   exit
+fi
+
+cd ./Run/HyVolumeData/
+
+if [ ! -d "./Rho0PhysFromScript" ]; then
+   ApplyObservers -t Rho0Phys -r Scalar -s=1 -domaininput ../HyDomain.input -o "ConvertToVtk(Input=Rho0Phys; Basename=Rho0PhysFromScript)" -NoDomainHistory
+fi
+
+pvbatch --use-offscreen-rendering /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts/pvslicer_log.py --pngfile Rho0Phys --field Rho0Phys --pvdfile Rho0PhysFromScript.pvd
+cp *.png ${current_path}/PNGsForRun/
+rm -rf *Rho0Phys*
+
+cd ${current_path}

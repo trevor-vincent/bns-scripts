@@ -1,0 +1,13 @@
+CURRENT_DIR=${PWD}
+
+find ${CURRENT_DIR} -type d -name 'bin' -follow | while read line; do
+#     DIR="$(dirname ${line})"
+     cd $line
+     cd ..
+     echo "Processing file '$line'"
+     echo $PWD
+     rm -rf bin
+     makethebins
+done
+
+cd $CURRENT_DIR

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+module load paraview
+
+if [ ! -d "./PNGsForRun/" ]; then
+   mkdir PNGsForRun	  
+fi
+
+current_path=${PWD}
+
+if [ ! -d "./Run/NeutrinoVolumeData/" ]; then
+   echo "Directory ${PWD}/Run/NeutrinoVolumeData does not exist, exiting..."
+   exit
+fi
+
+cd ./Run/NeutrinoVolumeData/
+
+if [ ! -d "./Eavg_eFromScript" ]; then
+   ApplyObservers -t Eavg_e -r Scalar -s=1 -domaininput ../HyDomain.input -o "ConvertToVtk(Input=Eavg_e; Basename=Eavg_eFromScript)" -NoDomainHistory
+fi
+
+pvbatch --use-offscreen-rendering /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts/pvslicer.py --pngfile Eavg_e --field Eavg_e --pvdfile Eavg_eFromScript.pvd
+cp *.png ${current_path}/PNGsForRun/
+rm -rf *Eavg_e*
+
+cd ${current_path}

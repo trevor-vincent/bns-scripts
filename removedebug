@@ -1,0 +1,11 @@
+rm -rf /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Debug/*
+NUM=$RANDOM
+ssh -fNML "$NUM":trinity.cita.utoronto.ca:22 gw.cita.utoronto.ca
+ssh localhost -p $NUM 'rm -rf /cita/d/www/home/tvincent/Debug/*'
+
+
+
+
+
+
+

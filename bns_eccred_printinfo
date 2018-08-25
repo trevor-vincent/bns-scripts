@@ -1,0 +1,83 @@
+#!/bin/bash
+
+if [ "$#" -eq 0 ];
+then
+    echo "bns_eccred_printinfo nsns_folder nsns_folder_eccred0 nsns_folder_eccred1 ..."
+fi
+
+NSNS_DIR='/scratch/p/pfeiffer/tvincent/BNS_Disks_project'
+NSNS_DIR_EV="$NSNS_DIR/Evolutions"
+NSNS_DIR_ID="$NSNS_DIR/InitialData"
+NSNS_DIR_SCRIPTS="$NSNS_DIR/Scripts"
+
+for var in "$@"
+do
+    echo "==============================================="
+    echo "$var"
+    echo "==============================================="    
+
+    echo " "
+    if [ ! -d "$NSNS_DIR_ID/$var/" ];
+    then
+	echo "$NSNS_DIR_ID/$var/ does not exist"
+    else
+	echo "$NSNS_DIR_ID/$var/DoMultipleRuns.input"
+	echo "==============================================="    
+	cd "$NSNS_DIR_ID/$var/"
+	cat DoMultipleRuns.input | grep "FixOmegaTo =" | cut -d ';' -f1
+	cat DoMultipleRuns.input | grep "'d'"
+	cat DoMultipleRuns.input | grep "\$dta =" | cut -d ';' -f1
+    fi
+
+    echo " "
+    if [ ! -d "$NSNS_DIR_ID/$var/EvID/" ];
+    then
+	echo "$NSNS_DIR_ID/$var/EvID/EvolutionParameters.perl does not exist"
+    else
+	echo "$NSNS_DIR_ID/$var/EvID/EvolutionParameters.perl"
+	echo "==============================================="    
+	cd "$NSNS_DIR_ID/${var}/EvID/"
+	cat EvolutionParameters.perl | grep ID_d
+	cat EvolutionParameters.perl | grep ID_Omega0
+	cat EvolutionParameters.perl | grep ID_adot0
+    fi
+
+    echo " "
+    if [ ! -d "$NSNS_DIR_EV/$var/EccRed" ];
+    then
+	echo "$NSNS_DIR_EV/$var/EccRed does not exist"
+    else
+	cd "$NSNS_DIR_EV/$var/EccRed/"
+	echo "$NSNS_DIR_EV/$var/EccRed/summary.txt"
+	echo "==============================================="    
+	dOMEGA0="$(cat summary.txt | grep F2cos2: | cut -d ':' -f 2 | cut -d' ' -f3)";
+	dadot0="$(cat summary.txt | grep F2cos2: | cut -d ':' -f 2 | cut -d' ' -f7)";
+	OMEGA0="$(cat $NSNS_DIR_ID/${var}/EvID/EvolutionParameters.perl | grep "ID_Omega0" | cut -d '=' -f 2 | cut -d ';' -f1)";
+	adot0="$(cat $NSNS_DIR_ID/${var}/EvID/EvolutionParameters.perl | grep "ID_adot0" | cut -d '=' -f 2 | cut -d ';' -f1)";
+	d0="$(cat $NSNS_DIR_ID/${var}/EvID/EvolutionParameters.perl | grep "ID_d" | cut -d '=' -f 2 | cut -d ';' -f1)";
+	dd0="$(cat summary.txt | grep F2cos2: | cut -d ':' -f 2 | cut -d' ' -f12 | cut -d '-' -f 2)";
+	NEW_OMEGA0="$(perl -e "print $OMEGA0 + $dOMEGA0")"
+	NEW_adot0="$(perl -e "print $adot0 + $dadot0")"
+	NEW_D0="$(perl -e "print $d0 + $dd0")"
+
+	ecc="$(cat summary.txt | grep F1cos1 | tail -n1 | cut -d ' ' -f15)"
+	rms="$(cat summary.txt | grep rms= | head -n1 | tr " " "\n" | tail -n1 | cut -d '=' -f2)"
+	echo "ecc = $ecc"
+	echo "rms = $rms"
+	echo "OMEGA0 = $OMEGA0"
+	echo "dOMEGA = $dOMEGA0"
+	echo "NEW_OMEGA0 = $NEW_OMEGA0"
+	echo "adot0 = $adot0"
+	echo "dadot0 = $dadot0"
+	echo "NEW_adot0 = $NEW_adot0"
+	echo "d0 = $d0"
+	echo "dd0 = $dd0"
+	echo "NEW_D0 = $NEW_D0" 
+    fi
+
+    echo " "
+    
+done
+
+
+

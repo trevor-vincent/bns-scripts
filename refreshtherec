@@ -1,0 +1,13 @@
+CURRENT_DIR=${PWD}
+
+find ${CURRENT_DIR} -name 'bin' -follow | while read line; do
+#     DIR="$(dirname ${line})"
+#     echo $DIR
+     echo "Processing file '$line'"
+#     echo $PWD
+#     echo "mv $line/RecoverOldCheckpoints $line/RecoverOldCheckpointsOLDVERSION"
+     mv $line/RecoverOldCheckpoints $line/RecoverOldCheckpointsOLDVERSION
+     ln -s /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts/RecoverOldCheckpoints2.py $line/RecoverOldCheckpoints
+done
+
+cd $CURRENT_DIR

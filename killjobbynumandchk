@@ -1,0 +1,5 @@
+qstat -u tvincent | sed -e '1,5d' > temp.txt
+LINE="$(sed "${1}q;d" temp.txt)"
+JOBID="$(echo $LINE | cut -c-7)"
+killjobandchk.sh $JOBID
+echo "killing $JOBID with a checkpoint"

@@ -1,0 +1,218 @@
+arrayh5.o: arrayh5.c /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
+ /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
+ /home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stddef.h \
+ /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
+ /usr/include/endian.h /usr/include/bits/endian.h \
+ /usr/include/bits/byteswap.h /usr/include/sys/types.h \
+ /usr/include/bits/types.h /usr/include/bits/typesizes.h \
+ /usr/include/time.h /usr/include/sys/select.h /usr/include/bits/select.h \
+ /usr/include/bits/sigset.h /usr/include/bits/time.h \
+ /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h \
+ /usr/include/alloca.h /usr/include/string.h /usr/include/xlocale.h \
+ /usr/include/bits/string.h /usr/include/bits/string2.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/hdf5.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5public.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5pubconf.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5version.h \
+ /home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include-fixed/limits.h \
+ /home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include-fixed/syslimits.h \
+ /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+ /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+ /usr/include/bits/posix2_lim.h \
+ /home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stdint.h \
+ /usr/include/stdint.h /usr/include/bits/wchar.h /usr/include/inttypes.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5api_adpt.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Apublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Ipublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Opublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Lpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Tpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5ACpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Cpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Dpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Epublic.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h \
+ /home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stdarg.h \
+ /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+ /usr/include/bits/stdio.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Epubgen.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Fpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Gpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5MMpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Ppublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Zpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Rpublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Spublic.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDcore.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDfamily.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDlog.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDmpi.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDmpio.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDmpiposix.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDmulti.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDsec2.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDstdio.h \
+ /home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDdirect.h arrayh5.h
+
+/usr/include/stdlib.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stddef.h:
+
+/usr/include/bits/waitflags.h:
+
+/usr/include/bits/waitstatus.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/bits/byteswap.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/time.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/alloca.h:
+
+/usr/include/string.h:
+
+/usr/include/xlocale.h:
+
+/usr/include/bits/string.h:
+
+/usr/include/bits/string2.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/hdf5.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5public.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5pubconf.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5version.h:
+
+/home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include-fixed/limits.h:
+
+/home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include-fixed/syslimits.h:
+
+/usr/include/limits.h:
+
+/usr/include/bits/posix1_lim.h:
+
+/usr/include/bits/local_lim.h:
+
+/usr/include/linux/limits.h:
+
+/usr/include/bits/posix2_lim.h:
+
+/home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/inttypes.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5api_adpt.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Apublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Ipublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Opublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Lpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Tpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5ACpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Cpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Dpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Epublic.h:
+
+/usr/include/stdio.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/home/apps/Logiciels/gcc/4.8.1/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Epubgen.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Fpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Gpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5MMpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Ppublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Zpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Rpublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5Spublic.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDcore.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDfamily.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDlog.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDmpi.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDmpio.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDmpiposix.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDmulti.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDsec2.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDstdio.h:
+
+/home/apps/Logiciels/hdf5/1.8.9-intel/include/H5FDdirect.h:
+
+arrayh5.h:

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+module load paraview
+
+if [ ! -d "./PNGsForRun/" ]; then
+   mkdir PNGsForRun	  
+fi
+
+current_path=${PWD}
+
+if [ ! -d "./Run/NeutrinoVolumeData/" ]; then
+   echo "Directory ${PWD}/Run/NeutrinoVolumeData does not exist, exiting..."
+   exit
+fi
+
+cd ./Run/NeutrinoVolumeData/
+
+if [ ! -d "./ENuaFromScript" ]; then
+   ApplyObservers -t ENua -r Scalar -s=1 -domaininput ../HyDomain.input -o "ConvertToVtk(Input=ENua; Basename=ENuaFromScript)" -NoDomainHistory
+fi
+
+pvbatch --use-offscreen-rendering /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts/pvslicer_neu_minmax.py --max 4.81e-6 --min 1e-12 --pngfile ENua --field ENua --pvdfile ENuaFromScript.pvd
+cp *.png ${current_path}/PNGsForRun/
+#rm -rf *ENua*
+
+cd ${current_path}

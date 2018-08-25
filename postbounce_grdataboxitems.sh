@@ -1,0 +1,2 @@
+sed -i 's/FilledCylinders::ExpChebHalfPower = 32;/#FilledCylinders::ExpChebHalfPower = 32;/g' GrDataBoxItems.input
+sed -i 's/StateChangerDependsOn     = Rotation,Scaling,Translation,/StateChangerDependsOn     = Translation,/g' GrDataBoxItems.input

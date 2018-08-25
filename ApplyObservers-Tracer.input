@@ -1,0 +1,115 @@
+DataBoxItems =
+   ReadFromFile(File=SpatialCoordMap.input),   
+    Domain(Items =
+            EvaluateScalarFormula(Formula=0.0*A+1.0;A=Rho;Output=ExcisionMask),
+    	      AddString(Output=ExcisionMaskName; Value=ExcisionMask),	    
+
+          #******************************************
+           #****  Regridder and maps *****************
+           #******************************************
+           FunctionVsTime(
+           Output = RegridSwitchFvT;
+           FunctionVsTime =
+           NthTimeDeriv(
+           DerivOrder=0;
+           ComponentLabels = Specified(Labels=Switch;);
+           InitialData=Values(Tstart=0.;f=0.;);
+           FileBaseName=FuncRegridSwitch;
+           );
+           ),
+           FunctionVsTime(
+           Output = RegridShiftFvT;
+           FunctionVsTime =
+           NthTimeDeriv(
+           DerivOrder=0;
+           ComponentLabels = Specified(Labels=dx,dy,dz;);
+           InitialData=Values(Tstart=0.;f=0.,0.,0.;);
+           FileBaseName=FuncRegridShift;
+           );
+           ),
+           FunctionVsTime(
+           Output = RegridScaleFvT;
+           FunctionVsTime =
+           NthTimeDeriv(
+           DerivOrder=0;
+           ComponentLabels = Specified(Labels=ax,ay,az;);
+           InitialData=Values(Tstart=0.;f=1.,1.,1.;);
+           FileBaseName=FuncRegridScale;
+           );
+           ),
+           RegridderMapBhNsComputeItem(
+           Output = MapBetweenDomainsString;
+           OrigCenter = 0.,0.,0.;
+           OrigSize = 2*, 2*, 2*;
+           HiResCenter = 0.,0.,0.;
+           HiResRadius = 100000.;
+           HiResFraction = 0.125;
+           RelGridSize = RegridScaleFvT;
+           RelGridShift = RegridShiftFvT;
+           ),
+           RegridderGetMapFromString(
+           Output     = MapBetweenDomains::SpatialCoordMap;
+           StringName = MapBetweenDomainsString;
+           InvertMap  = false;
+           ),
+           RegridderGetMapFromString(
+           Output     = InverseMapBetweenDomains::SpatialCoordMap;
+           StringName = MapBetweenDomainsString;
+           InvertMap  = true;
+           ),
+           ComposeMapsFromDataBoxComputeItem
+           (
+           Output = GridToInertialFD::SpatialCoordMap;
+           InitialMap = MapBetweenDomains::SpatialCoordMap;
+           FinalMap   = GridToSpectralInertial::SpatialCoordMap;
+           ),
+           SpatialCoordMapItems
+           (
+           MapIsInDataBox = yes;
+           Prefix=GridToInertialFD;
+           InputCoords=<<Grid>>;
+           ),
+           SpatialCoordMapItems
+           (
+           MapIsInDataBox = yes;
+           Prefix=MapBetweenDomains;
+           InputCoords=<<Grid>>;
+           ),
+           TracerGrid(
+                      Extents = 135,135,135;
+                      Xbounds =  -2*,2*;
+                      Ybounds = -2*,2*; 
+                      Zbounds = -2*,2*;
+                      MinDensity = 1e-12;
+                      MaxDensity = 1.;
+                      MapForGrid = GridToInertialFD::SpatialCoordMap;
+                      MapForFunctions = None;
+                      Interpolator = NonBlocking
+                      (
+                       TopologicalInterpolator = ExcisionCappedPolynomial(StrictCapNearExcision=true;);
+                       DistributePoints = AdaptiveNoWeight();
+                       ChooseSubdomain  = FarthestFromBoundary(TerminateOnPointsOutside=true;);
+                       );
+                      Output=TracerX;
+                      ), # End TracerGrid
+           ),
+    Subdomain(Items =
+            EvaluateScalarFormula(Formula=0.0*A+1.0;A=Rho;Output=ExcisionMask),
+    	      AddString(Output=ExcisionMaskName; Value=ExcisionMask),
+              CopyTracerFromParent(Input=TracerX; Output=TracerX;),
+              ),
+
+    ;
+
+
+Observers =
+    ObserveInSubdir
+    (
+     Subdir = TracerData;
+     Observers =
+     (
+      DumpTensors(Input=TracerX;),
+      ); # END Observers
+     ), # END ObserveInSubdir
+    ; # END Observers
+

@@ -1,0 +1,12 @@
+CURRENT_PWD=${PWD}
+NSNS_DIR='/scratch/p/pfeiffer/tvincent/BNS_Disks_project'
+NSNS_DIR_EV="$NSNS_DIR/Evolutions"
+
+if [ ! -d "${NSNS_DIR_EV}/${1}" ]; then
+    echo "${NSNS_DIR_EV}/${1} does not exist, please try again"
+    exit
+fi
+
+cd $NSNS_DIR_EV/$1
+find ${PWD} -name "*SpEC.out" -printf "%T+\t%p\n" | sort | tail -n1 | cut -f2
+cd $CURRENT_PWD

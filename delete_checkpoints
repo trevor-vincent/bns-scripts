@@ -1,0 +1,20 @@
+#!/bin/bash
+
+save_path=${PWD}
+
+find . -type d -name "*Checkpoints" -print 2>/dev/null | while read line; do
+    echo "Processing file '$line'"
+    cd $line && cd ../ && mv_checkpoints
+    cd ${save_path}
+    ls -dav $line/*/ 2>/dev/null
+    LAST_CHK="$(ls -dav $line/*/ 2>/dev/null | tail -n1)"
+    ls -dav $line/*/ 2>/dev/null | while read line; do
+	if [ "$line" != "$LAST_CHK" ]
+	then
+	    echo "We will delete $line"
+	    echo "rm -rf $line"
+	    rm -rf $line
+	fi	   
+    done
+    echo "We will keep $LAST_CHK"
+done

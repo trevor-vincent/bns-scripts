@@ -1,0 +1,26 @@
+#!/bin/bash
+
+module load paraview
+
+if [ ! -d "./PNGsForRun/" ]; then
+   mkdir PNGsForRun	  
+fi
+
+current_path=${PWD}
+
+if [ ! -d "./Run/HyVolumeData/" ]; then
+   echo "Directory ${PWD}/Run/HyVolumeData does not exist, exiting..."
+   exit
+fi
+
+cd ./Run/HyVolumeData/
+
+if [ ! -d "./vInertialFromScript" ]; then
+   ApplyObservers -t vInertial -r 1 -d 3 -s=1 -domaininput ../HyDomain.input -o "ConvertToVtk(Input=vInertial; Basename=vInertialFromScript)" -NoDomainHistory
+fi
+
+pvbatch --use-offscreen-rendering /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts/pvslicer.py --pngfile vInertial --field vInertial --pvdfile vInertialFromScript.pvd
+cp *.png ${current_path}/PNGsForRun/
+rm -rf *vInertial*
+
+cd ${current_path}

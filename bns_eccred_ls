@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ "$#" -eq 0 ];
+then
+    echo "bns_eccred_ls nsns_folder_prefix (ignoring eccred0 eccred1 etc)"
+fi
+
+NSNS_DIR='/scratch/p/pfeiffer/tvincent/BNS_Disks_project'
+NSNS_DIR_EV="$NSNS_DIR/Evolutions"
+NSNS_DIR_ID="$NSNS_DIR/InitialData"
+NSNS_DIR_SCRIPTS="$NSNS_DIR/Scripts"
+
+cd "$NSNS_DIR_ID"
+ls | grep "$1" | tr "\n" " " | cut -d '-' -f1 | xargs bns_eccred_printinfo

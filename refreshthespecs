@@ -1,0 +1,26 @@
+CURRENT_DIR=${PWD}
+
+if [ $# -ne 1 ]; then
+   echo refresthespecs /scratch/p/pfeiffer/tvincent/SpEC_NOLEAK/Hydro/EvolveTwoDomains/Executables/EvolveGRHydro
+fi
+
+SPEC_EXEC=$1
+echo "using SPEC_EXEC=$SPEC_EXEC"
+
+find ${CURRENT_DIR} -name 'SpEC' -follow | while read line; do
+     DIR="$(dirname ${line})"
+     cd $DIR
+     echo "Processing file '$line'"
+     rm -f SpEC
+     ln -s $SPEC_EXEC SpEC
+done
+
+find ${CURRENT_DIR} -name 'EvolveGRHydro' -follow | while read line; do
+     DIR="$(dirname ${line})"
+     cd $DIR
+     echo "Processing file '$line'"
+     rm -f EvolveGRHydro
+     ln -s $SPEC_EXEC EvolveGRHydro
+done
+
+cd $CURRENT_DIR

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+module load paraview
+
+current_path=${PWD}
+
+if [ ! -d "./EConsFromScript" ]; then
+   ApplyObservers  -h5prefix='Cp-Vars' -t NuECons_nua0 -r Scalar -s=1 -domaininput ../../HyDomain.input -o "ConvertToVtk(Input=NuECons_nua0; Basename=EConsFromScript)" -NoDomainHistory
+fi
+
+pvbatch --use-offscreen-rendering /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts/pvslicer_neu_minmax_cpvars.py --min 1e-12 --pngfile ECons --field NuECons_nua0 --pvdfile EConsFromScript.pvd
+cp *.png ${current_path}/PNGsForRun/
+#rm -rf *ECons*
+
+cd ${current_path}

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+module load paraview
+
+if [ ! -d "./PNGsForRun/" ]; then
+   mkdir PNGsForRun	  
+fi
+
+current_path=${PWD}
+
+if [ ! -d "./Run/HyVolumeData/" ]; then
+   echo "Directory ${PWD}/Run/HyVolumeData does not exist, exiting..."
+   exit
+fi
+
+cd ./Run/HyVolumeData/
+
+if [ ! -d "./TempFromScript" ]; then
+   ApplyObservers -t Temp -r Scalar -s=1 -domaininput ../HyDomain.input -o "ConvertToVtk(Input=Temp; Basename=TempFromScript)" -NoDomainHistory
+fi
+
+pvbatch --use-offscreen-rendering /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts/pvslicer.py --pngfile Temp --field Temp --pvdfile TempFromScript.pvd
+cp *.png ${current_path}/PNGsForRun/
+rm -rf *Temp*
+
+cd ${current_path}

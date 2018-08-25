@@ -1,0 +1,199 @@
+Observers=
+        Add(ObservationTrigger = EveryDeltaT(DeltaT=1);
+        Observers =
+                ObserveInSubdir
+                (Subdir=NeutrinoObservers;
+                Observers =
+                DumpParameters(Input=NeutrinoFluxeAtBoundary; GetFromRoot=true),
+                DumpParameters(Input=NeutrinoFluxaAtBoundary; GetFromRoot=true),
+                DumpParameters(Input=NeutrinoFluxxAtBoundary; GetFromRoot=true),
+                )
+                );
+
+DenseStateChangers =
+    NeutrinoM1Evolution(DenseTriggerForApply=EveryStep;),
+    NeutrinoFluxeAtBoundary(DenseTriggerForApply=ObserveFluxTrigger),
+    NeutrinoFluxaAtBoundary(DenseTriggerForApply=ObserveFluxTrigger),
+    NeutrinoFluxxAtBoundary(DenseTriggerForApply=ObserveFluxTrigger),
+    ParticlesAtBoundary_nue(DenseTriggerForApply=ParticleFluxTrigger),
+    ParticlesAtBoundary_nua(DenseTriggerForApply=ParticleFluxTrigger),
+    ParticlesAtBoundary_nux(DenseTriggerForApply=ParticleFluxTrigger);
+
+StateChangerDenseTriggers =
+        ObserveFluxTrigger(Trigger=
+                Or(DenseTriggers =
+                EveryChunk(NoTriggerOnZero=no),
+                EveryDeltaT(DeltaT=1);
+                );
+                ),
+        ParticleFluxTrigger(Trigger=
+                Or(DenseTriggers =
+                EveryChunk(NoTriggerOnZero=no),
+                StepAfterChunkFraction(NoTriggerNearChunkEps=0.001;
+                                        TstartIsStartOfChunk =yes;
+                                        Frac=.25;);
+                );
+                ),
+        EveryStep(Trigger=EveryNSteps(NSteps=1;NoTriggerOnZero=yes;));
+
+StateChangerTags =
+        NeutrinoM1Evolution(
+        StateChanger=
+        EvolveGrayM1StateChanger(
+        CoupleToHydro=true;
+        SetOpticallyThickEquilibrium = true;
+        DiagnosticFile = DiagM1StateChanger.dat;
+        );
+        ),
+        NeutrinoFluxeAtBoundary(
+        StateChanger=
+        SimpleFluxAtBoundary(
+        Output = NeutrinoFluxeAtBoundary;
+        Flux = NeutrinoFluxe;
+        ForbidIncomingFlux = false;
+        GhostZoneMask = GhostZoneMask;
+        DistanceDataMesh = DistanceFromBoundaryMask;
+        MeasurementDistance = 6;
+        );
+        ),
+        NeutrinoFluxaAtBoundary(
+        StateChanger=
+        SimpleFluxAtBoundary(
+        Output = NeutrinoFluxaAtBoundary;
+        Flux = NeutrinoFluxa;
+        ForbidIncomingFlux = false;
+        GhostZoneMask = GhostZoneMask;
+        DistanceDataMesh = DistanceFromBoundaryMask;
+        MeasurementDistance = 6;
+        );
+        ),
+        NeutrinoFluxxAtBoundary(
+        StateChanger=
+        SimpleFluxAtBoundary(
+        Output = NeutrinoFluxxAtBoundary;
+        Flux = NeutrinoFluxx;
+        ForbidIncomingFlux = false;
+        GhostZoneMask = GhostZoneMask;
+        DistanceDataMesh = DistanceFromBoundaryMask;
+        MeasurementDistance = 6;
+        );
+        ),
+        ParticlesAtBoundary_nue(
+        StateChanger=
+        FluxToParticlesAtBoundary(
+        Flux = NeutrinoFluxe;
+        GhostZoneMask = GhostZoneMask;
+        DistanceDataMesh = DistanceFromBoundaryMask;
+        MeasurementDistance = 6;
+        AuxiliaryVariables = ENue,Eavg_e,FtGride,ClosureXi_nue;
+        Coords=GridToInertialFD::MappedCoords;
+        ParticleMass=1.e-9;
+        FilePrefix=NueParticles;
+        );
+        ),
+        ParticlesAtBoundary_nua(
+        StateChanger=
+        FluxToParticlesAtBoundary(
+        Flux = NeutrinoFluxa;
+        GhostZoneMask = GhostZoneMask;
+        DistanceDataMesh = DistanceFromBoundaryMask;
+        MeasurementDistance = 6;
+        AuxiliaryVariables = ENua,Eavg_a,FtGrida,ClosureXi_nua;
+        Coords=GridToInertialFD::MappedCoords;
+        ParticleMass=1.e-9;
+        FilePrefix=NuaParticles;
+        );
+        ),
+        ParticlesAtBoundary_nux(
+        StateChanger=
+        FluxToParticlesAtBoundary(
+        Flux = NeutrinoFluxx;
+        GhostZoneMask = GhostZoneMask;
+        DistanceDataMesh = DistanceFromBoundaryMask;
+        MeasurementDistance = 6;
+        AuxiliaryVariables = ENux,Eavg_x,FtGridx,ClosureXi_nux;
+        Coords=GridToInertialFD::MappedCoords;
+        ParticleMass=1.e-9;
+        FilePrefix=NuxParticles;
+        );
+        );
+
+
+DataBoxItems =
+     Domain (Items =
+     AddNeutrinoPhysics
+     (NeutrinoPhysics=RosswogLeakage
+          (filename=/scratch/tvincent/EoSFiles/LS220_ChemicalPotentials.dat;
+          )
+     ),
+    ),
+    Subdomain
+        (Items =
+        #Note we actually want d_i g_{kl} from d_i g^{kl} here... so invert g <-> Invg in the opts
+        SpatialDerivOfInvg(
+        dg = dInvg;
+        Invg = g;
+        Output = dg;
+        ),
+        EvaluateScalarFormula(A=Detg; Output=sDetg; Formula=sqrt(A);),
+
+        BinaryOp(A=FCons_nux; B=sDetg; Op =A/B; Output=FNux),
+        BinaryOp(A=FCons_nua; B=sDetg; Op =A/B; Output=FNua),
+        BinaryOp(A=FCons_nue; B=sDetg; Op =A/B; Output=FNue),
+        EvaluateScalarFormula(A=ECons_nux; B=sDetg; Formula=A/B; Output=ENux),
+        EvaluateScalarFormula(A=ECons_nua; B=sDetg; Formula=A/B; Output=ENua),
+        EvaluateScalarFormula(A=ECons_nue; B=sDetg; Formula=A/B; Output=ENue),
+
+        ContractVectorWithTensor(Output=FaUp; Vector=FNua; Tensor=Invg; Index=0; Metric=None;),
+        ContractVectorWithTensor(Output=FeUp; Vector=FNue; Tensor=Invg; Index=0; Metric=None;),
+        ContractVectorWithTensor(Output=FxUp; Vector=FNux; Tensor=Invg; Index=0; Metric=None;),
+
+        BinaryOp(A=FaUp; B=ENua; Op=A/B; Output=FoEa;),
+        BinaryOp(A=FeUp; B=ENue; Op=A/B; Output=FoEe;),
+        BinaryOp(A=FxUp; B=ENux; Op=A/B; Output=FoEx;),
+        BinaryOp(A=FoEa; B=Lapse; Op=A*B; Output=Ftempa;),
+        BinaryOp(A=FoEe; B=Lapse; Op=A*B; Output=Ftempe;),
+        BinaryOp(A=FoEx; B=Lapse; Op=A*B; Output=Ftempx;),
+        BinaryOp(A=Ftempa; B=Shift; Op=A-B; Output=FtGrida;),
+        BinaryOp(A=Ftempe; B=Shift; Op=A-B; Output=FtGride;),
+        BinaryOp(A=Ftempx; B=Shift; Op=A-B; Output=FtGridx;),
+        BinaryOp(A=FtGrida; B=ECons_nua;Op=A*B; Output=NeutrinoFluxa;),
+        BinaryOp(A=FtGride; B=ECons_nue;Op=A*B; Output=NeutrinoFluxe;),
+        BinaryOp(A=FtGridx; B=ECons_nux;Op=A*B; Output=NeutrinoFluxx;),
+        # Average energy (inertial frame)
+        EvaluateScalarFormula(E=ECons_nue; N=NCons_nue; Formula=(E)/(N+1.e-70); Output=Eavg_e;),
+        EvaluateScalarFormula(E=ECons_nua; N=NCons_nua; Formula=(E)/(N+1.e-70); Output=Eavg_a;),
+        EvaluateScalarFormula(E=ECons_nux; N=NCons_nux; Formula=(E)/(N+1.e-70); Output=Eavg_x;),
+
+        SpatialCoordMap::TransformTensorToDifferentFrame
+        (Input=FtGrida;Output=FInertiala;IndexPositions=u;MapPrefixToOutputFrame=GridToInertialFD),
+        SpatialCoordMap::TransformTensorToDifferentFrame
+        (Input=FtGride;Output=FInertiale;IndexPositions=u;MapPrefixToOutputFrame=GridToInertialFD),
+        SpatialCoordMap::TransformTensorToDifferentFrame
+        (Input=FtGridx;Output=FInertialx;IndexPositions=u;MapPrefixToOutputFrame=GridToInertialFD),
+        EvaluateScalarFormula(Formula=1.e-25; Output=IG-Enu;),
+        EvaluateFormula(Output=IG-Fnu; A=u_i; Formula=1.e-26*A;),
+        );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

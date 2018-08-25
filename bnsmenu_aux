@@ -1,0 +1,109 @@
+#!/bin/bash
+
+cd /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions
+ls -a
+shopt -s dotglob
+shopt -s nullglob
+array=(*/)
+PS3="which dir do you want? "
+echo "There are ${#array[@]} dirs in the current path"; \
+select dir in "${array[@]}";
+    do
+
+	RUN=$(basename ${dir})
+	echo "you selected $RUN"'!';	
+	cd ${RUN}
+	PS3='Please enter your choice: '
+	options=("Go to latest run folder" "Go to latest HyVolumeData folder" "Make Plunge Debug Webpage and Upload" "Make Plunge_hydro_only Debug Webpage and Upload" "Make Inspiral Debug Webpage and Upload" "Eccentricity Reduction" "Display EvolutionParameters.perl" "Less NSA COM in Inspiral" "Move to not needed folder" "Quit")
+	
+	select opt in "${options[@]}"
+	do
+	    case $opt in
+		"Go to latest run folder")
+		    while [ ! $(basename ${PWD}) == "Run" ]
+		    do
+			LASTRUN=${PWD}
+			echo "cding into $(basename ${PWD})"
+#			echo "$( ls -d ./*/ | grep -c Merger )"
+#			ls -t | grep -c Merger
+			if [ "$( ls -d ./*/ | grep -c Merger )" -ge 1 ]
+			then 
+			    cd  "$(ls -1dt ./*/ | grep -v 'JoinedPlunge' | grep -v 'EccRed' | grep -v 'JoinedInspiral' | grep -v 'bin' | grep Merger | head -n 1)"
+			fi
+
+			if [ "$( ls -d ./*/ | grep -c Run )" -ge 1 ]
+			then 
+			    cd Run
+			    break;
+			else
+#			    echo "$(ls -1dt ./*/ | grep -v 'JoinedPlunge' | grep -v 'EccRed' | grep -v 'JoinedInspiral' | grep -v 'bin' | head -n 1)"
+			    cd  "$(ls -1dt ./*/ | grep -v 'JoinedPlunge' | grep -v 'EccRed' | grep -v 'JoinedInspiral' | grep -v 'bin' | head -n 1)"
+			fi
+
+			if [ ${PWD} == ${LASTRUN} ]; then
+			    break;
+			fi
+			echo "dir is now ${PWD}"
+		    done
+		    break
+		    ;;
+		"Go to latest HyVolumeData folder")
+		    while [ ! $(basename ${PWD}) == "HyVolumeData" ]
+		    do
+			LASTRUN=${PWD}
+			echo "cding into $(basename ${PWD})"
+#			echo "$( ls -d ./*/ | grep -c Merger )"
+#			ls -t | grep -c Merger
+			if [ "$( ls -d ./*/ | grep -c Merger )" -ge 1 ]
+			then 
+			    cd  "$(ls -1dt ./*/ | grep -v 'JoinedPlunge' | grep -v 'EccRed' | grep -v 'JoinedInspiral' | grep -v 'bin' | grep Merger | head -n 1)"
+			fi
+
+			if [ "$( ls -d ./*/ | grep -c HyVolumeData )" -ge 1 ]
+			then 
+			    cd HyVolumeData
+			    break;
+			else
+#			    echo "$(ls -1dt ./*/ | grep -v 'JoinedPlunge' | grep -v 'EccRed' | grep -v 'JoinedInspiral' | grep -v 'bin' | head -n 1)"
+			    cd  "$(ls -1dt ./*/ | grep -v 'JoinedPlunge' | grep -v 'EccRed' | grep -v 'JoinedInspiral' | grep -v 'bin' | head -n 1)"
+			fi
+
+			if [ ${PWD} == ${LASTRUN} ]; then
+			    break;
+			fi
+			echo "dir is now ${PWD}"
+		    done
+		    break
+		    ;;
+
+		"Make Plunge Debug Webpage and Upload")
+		    make_debug_webpage ${RUN} Plunge 1
+		    ;;
+		"Make Plunge_hydro_only Debug Webpage and Upload")
+		    make_debug_webpage ${RUN} Plunge_hydro_only 1
+		    ;;
+		"Make Inspiral Debug Webpage and Upload")
+		    make_debug_webpage ${RUN} Inspiral 1		    
+		    ;;
+		"Eccentricity Reduction")
+		    bns_eccred.sh ${RUN}
+		    ;;
+		"Display EvolutionParameters.perl")
+		    cat ${PWD}/ID/EvID/EvolutionParameters.perl
+		    ;;
+                "Less NSA COM in Inspiral")
+		    less ${PWD}/Ev/Lev0_AA/Run/CoM-NSA-InertialFrame.dat
+                    ;;
+		"Move to not needed folder")
+		    cd ../
+		    mv ${RUN} ./NOT_NEEDED_ANYMORE/${RUN}
+		    ;;
+		"Quit")
+		    break
+		    ;;
+		*) echo invalid option;;
+	    esac
+	done
+readarray -t array < "$1"
+	#break
+done

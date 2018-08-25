@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [ "$#" -gt 1 ]; then
+    echo "convert_leakage_to_m1 <ev_run_here>"
+    echo "<nsns_ev_folder_name> is optional, it will be given the same name as id if not provided" 
+    exit
+fi
+
+NSNS_DIR='/scratch/p/pfeiffer/tvincent/BNS_Disks_project'
+NSNS_DIR_EV="$NSNS_DIR/Evolutions"
+NSNS_EV_DIR="$NSNS_DIR_EV/$1/Ev/"
+
+
+if [ ! -d "$NSNS_EV_DIR" ]; then
+    echo "directory $NSNS_EV_DIR does not exist, please try again"
+    exit
+fi
+
+cd $NSNS_EV_DIR
+
+sed -i "s/__NU__      NeutrinoRadiation      = S_nu;/__NU__      NeutrinoRadiation      = off;/g" HySetupAndEvolution.input
+sed -i "s/DomainSymmetry         = ReflectZ;/DomainSymmetry         = None;/g" HySetupAndEvolution.input
+sed -i "s/DomainSymmetry     = ReflectZ;/DomainSymmetry     = None;/g" Evolution.input
+sed -i "s/\"__KRecOrder__\"/#\"__KRecOrder__\"/g" DoMultipleRuns.input
+
+cp /scratch/p/pfeiffer/tvincent/BNS_Disks_project/InputFiles/M1_Inspiral_New/NuEvolution.input ./NuEvolution.input
+cp /scratch/p/pfeiffer/tvincent/BNS_Disks_project/InputFiles/M1_Inspiral_New/EjectaItems.input ./EjectaItems.input
+cp /scratch/p/pfeiffer/tvincent/BNS_Disks_project/InputFiles/M1_Inspiral_New/NeutrinoItems.input ./NeutrinoItems.input
+cp /scratch/p/pfeiffer/tvincent/BNS_Disks_project/InputFiles/M1_Inspiral_New/HyObservers.input ./HyObservers.input
+cp /scratch/p/pfeiffer/tvincent/BNS_Disks_project/InputFiles/M1_Inspiral_New/HyDataBoxItems.input ./HyDataBoxItems.input
+cp /scratch/p/pfeiffer/tvincent/BNS_Disks_project/InputFiles/M1_Inspiral_New/HyStateChangers.input ./HyStateChangers.input
+cp /scratch/p/pfeiffer/tvincent/BNS_Disks_project/InputFiles/M1_Inspiral_New/HyDomain.input ./HyDomain.input
+
+#sed -i 's/PolyOrder=/MaxPointsPerDim=60;PolyOrder=/g' ./*.input

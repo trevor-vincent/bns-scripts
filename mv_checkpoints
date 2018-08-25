@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ -d "ForcedCheckpoints" ]; then
+    mv ForcedCheckpoints/* Checkpoints/
+    rm -rf ForcedCheckpoints
+fi
+
+for D in $(ls | grep -E ^[0-9]+); do mv $D Checkpoints/; done

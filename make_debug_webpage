@@ -1,0 +1,69 @@
+#!/bin/bash
+
+if [ "$#" -gt 3 ]; then
+    echo "make_debug_webpage <nsns_ev_run_name> <type (Inspiral/Plunge)> <upload (1/0)>"
+    exit
+fi
+
+if [ "$#" -lt 3 ]; then
+    echo "make_debug_webpage <nsns_ev_run_name> <type (Inspiral/Plunge)> <upload (1/0)>"
+    exit
+fi
+
+NSNS_RUN=$1
+NSNS_TYPE=$2
+UPLOAD=$3
+
+NSNS_DIR='/scratch/p/pfeiffer/tvincent/BNS_Disks_project'
+NSNS_DIR_EV="$NSNS_DIR/Evolutions"
+NSNS_DIR_ID="$NSNS_DIR/InitialData"
+NSNS_DIR_SCRIPTS="$NSNS_DIR/Scripts"
+
+if [ ! -d "$NSNS_DIR_EV/$NSNS_RUN" ]; then
+    echo "directory $NSNS_DIR_EV/$NSNS_RUN does not exist, please try again"
+    exit
+fi
+
+
+if [ $NSNS_TYPE = "Plunge" ]
+then
+    cd $NSNS_DIR_EV/$NSNS_RUN
+    cd Ev
+    rm -rf JoinedPlunge
+    cd *Merger
+    rm -rf JoinedPlunge && CombineSegments.py -L 0 -o ../JoinedPlunge -f ConstraintNorms/GhCe.dat MatterObservers NeutrinoObservers MemoryInfo.dat TStepperDiag.dat TimeInfo.dat MassAvgs.dat DensestPoint.dat CoM-NSA-InertialFrame.dat CoM-NSB-InertialFrame.dat NeutrinoLuminosity.dat -d ./
+  #  cd ./JoinedPlunge/Run/WaveExt
+    #ExtractFromH5 rh_FiniteRadii_CodeUnits.h5
+    cd $NSNS_DIR_SCRIPTS && ./debug_inspiral.sh $NSNS_RUN $NSNS_DIR_EV/$NSNS_RUN/Ev/JoinedPlunge/Run M1 Plunge
+elif [ $NSNS_TYPE = "Plunge_hydro_only" ]
+then
+    cd $NSNS_DIR_EV/$NSNS_RUN
+    cd Ev
+    rm -rf JoinedPlunge
+    cd *Merger
+    rm -rf JoinedPlunge && CombineSegments.py -L 0 -o ../JoinedPlunge -f ConstraintNorms/GhCe.dat MatterObservers MemoryInfo.dat TStepperDiag.dat TimeInfo.dat MassAvgs.dat DensestPoint.dat CoM-NSA-InertialFrame.dat CoM-NSB-InertialFrame.dat -d ./
+ #   cd ./JoinedPlunge/Run/WaveExt
+    #ExtractFromH5 rh_FiniteRadii_CodeUnits.h5
+    cd $NSNS_DIR_SCRIPTS && ./debug_inspiral.sh $NSNS_RUN $NSNS_DIR_EV/$NSNS_RUN/Ev/JoinedPlunge/Run hydro_only Plunge
+elif [ $NSNS_TYPE = "Inspiral" ]
+then
+    cd $NSNS_DIR_EV/$NSNS_RUN
+    cd Ev
+    rm -rf JoinedInspiral && CombineSegments.py -L 0 -o JoinedInspiral -f ConstraintNorms/GhCe.dat MatterObservers NeutrinoObservers TStepperDiag.dat TimeInfo.dat MassAvgs.dat DensestPoint.dat MemoryInfo.dat CoM-NSA-InertialFrame.dat CoM-NSB-InertialFrame.dat NeutrinoLuminosity.dat -d ./
+#    cd ./JoinedInspiral/Run/WaveExt
+    #ExtractFromH5 rh_FiniteRadii_CodeUnits.h5
+    cd $NSNS_DIR_SCRIPTS && ./debug_inspiral.sh $NSNS_RUN $NSNS_DIR_EV/$NSNS_RUN/Ev/JoinedInspiral/Run M1 Inspiral
+else
+    echo "2nd argument must be Inspiral or Plunge"
+fi
+
+if [ $UPLOAD -eq 1 ]
+then
+NUM=$RANDOM
+ssh -fNML "$NUM":trinity.cita.utoronto.ca:22 gw.cita.utoronto.ca
+scp -r -P "$NUM" /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Debug localhost:/cita/d/www/home/tvincent/
+killall -u tvincent ssh
+else
+    echo "Not uploading because third argument is not 1"
+fi
+

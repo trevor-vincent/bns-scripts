@@ -1,0 +1,8 @@
+#!/bin/bash                                                                                                                                                                                                      
+mkdir bin
+cp $SPEC_HOME/Support/bin/* ./bin/
+cp $SPEC_HOME/Support/Perl/* ./bin/
+cp $SPEC_HOME/Support/Python/* ./bin/
+cp $SPEC_HOME/MakefileRules/this_machine.env ./bin/
+cp $SPEC_HOME/MakefileRules/this_machine.def ./bin/
+cp /scratch/p/pfeiffer/tvincent/SpEC_NOLEAK/Hydro/EvolveTwoDomains/Executables/EvolveGRHydro ./bin/

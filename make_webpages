@@ -1,0 +1,8 @@
+cd /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions
+
+for D in $(ls | grep nsns);
+do
+echo "Making webpage for ${D}"
+make_debug_webpage ${D} Plunge 1
+make_debug_webpage ${D} Inspiral 1
+done

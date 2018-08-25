@@ -1,0 +1,1265 @@
+Wed Jun 24 13:01:40 EDT 2009  stevenj@alum.mit.edu
+  * date for 1.12.1 release
+
+    M ./NEWS -1 +1
+
+Wed Jun 24 13:00:51 EDT 2009  stevenj@alum.mit.edu
+  * use octave-config to detect installation path for Octave plugins
+
+    M ./NEWS +5
+    M ./configure.ac -2 +9
+
+Fri Jun 12 17:42:21 EDT 2009  stevenj@alum.mit.edu
+  tagged h5utils-1.12
+
+
+Fri Jun 12 17:34:08 EDT 2009  stevenj@alum.mit.edu
+  * Fixed installation of h5read.oct for Octave 3.x.
+
+    M ./NEWS +2
+    M ./configure.ac -1 +4
+
+Fri Jun 12 17:13:55 EDT 2009  stevenj@alum.mit.edu
+  * flip vertical axis in writepng, corresponding better to user expectations
+
+    M ./NEWS -1 +6
+    M ./configure.ac -1 +1
+    M ./writepng.c -3 +3
+
+Fri Jun 12 17:05:47 EDT 2009  stevenj@alum.mit.edu
+  * mkdist.sh is no longer needed
+
+    R ./mkdist.sh
+
+Fri Jun 12 17:04:59 EDT 2009  stevenj@alum.mit.edu
+  * copyright year bump
+
+    M ./COPYING -2 +1
+    M ./arrayh4.c -1 +1
+    M ./arrayh4.h -1 +1
+    M ./arrayh5.h -1 +1
+    M ./copyright.h -1 +1
+    M ./h4fromh5.1 -1 +1
+    M ./h4fromh5.c -1 +1
+    M ./h5fromh4.1 -1 +1
+    M ./h5fromh4.c -1 +1
+    M ./h5fromitxt.c -1 +1
+    M ./h5fromtxt.1 -1 +1
+    M ./h5fromtxt.c -1 +1
+    M ./h5math.1 -1 +1
+    M ./h5math.c -1 +1
+    M ./h5topng.c -1 +1
+    M ./h5totxt.1 -1 +1
+    M ./h5totxt.c -1 +1
+    M ./h5tov5d.1 -1 +1
+    M ./h5tov5d.c -2 +2
+    M ./h5tovtk.c -1 +1
+    M ./h5utils.c -1 +1
+    M ./h5utils.h -1 +1
+    M ./writepng.c -1 +1
+    M ./writepng.h -1 +1
+
+Fri Jun 12 17:03:57 EDT 2009  stevenj@alum.mit.edu
+  * fixed h5tovtk -2, more portable handling of integer types
+
+    M ./NEWS +4
+    M ./configure.ac -11 +13
+    M ./h5tovtk.c -7 +30
+
+Mon Apr 28 15:55:11 EDT 2008  stevenj@alum.mit.edu
+  tagged 1.11.1
+
+
+Mon Apr 28 15:53:59 EDT 2008  stevenj@alum.mit.edu
+  * copyright bump
+
+    M ./arrayh5.c -1 +1
+    M ./copyright.h -1 +1
+    M ./h5tovtk.c -1 +1
+
+Mon Apr 28 15:48:22 EDT 2008  stevenj@alum.mit.edu
+  * bug fix: autoconf 2.60 makes $datadir refer to $datarootdir which refers to $prefix, so we have to call "eval" twice (similar to AC_DEFINE_DIR macro in autoconf macro archive)
+
+    M ./NEWS +5
+    M ./configure.ac -1 +2
+
+Thu Apr 24 15:48:29 EDT 2008  stevenj@alum.mit.edu
+  tagged 1.11
+
+
+Thu Apr 24 15:41:32 EDT 2008  stevenj@alum.mit.edu
+  * added darcs-dist target
+
+    A ./ChangeLog
+    M ./Makefile.am +9
+
+Thu Apr 24 15:39:38 EDT 2008  stevenj@alum.mit.edu
+  * version bump, rm autoconf warning
+
+    M ./NEWS +7
+    M ./configure.ac -1 +2
+
+Thu Apr 24 15:34:39 EDT 2008  stevenj@alum.mit.edu
+  * compatibility with HDF5 1.8
+
+    M ./arrayh5.c +3
+
+Tue Apr  3 13:53:51 EDT 2007  stevenj@alum.mit.edu
+  * fix typo
+
+    M ./h5tovtk.1 -1
+
+Tue Apr  3 13:52:13 EDT 2007  stevenj@alum.mit.edu
+  * h5tovtk should write out dimensions in correct order, not the reverse, according to VTK's column-major convention; thanks to Andreas Wilde for the suggestion and a preliminary patch
+
+    M ./h5tovtk.c -7 +13
+
+Tue Apr  3 13:35:02 EDT 2007  stevenj@alum.mit.edu
+  * darcs updates
+
+    R ./ChangeLog
+    R ./install-sh
+    M ./mkdist.sh -9 +1
+
+Wed Sep 20 11:46:47 EDT 2006  stevenj
+  * version bump
+
+    M ./NEWS +5
+    M ./configure.ac -1 +1
+
+Wed Sep 20 11:41:03 EDT 2006  stevenj
+  * add EXEEXT for Cygwin builds
+
+    M ./configure.ac -5 +5
+
+Fri Oct 21 19:53:29 EDT 2005  stevenj
+  * whoops
+
+    M ./Makefile.am -1 +1
+
+Fri Oct 21 19:53:00 EDT 2005  stevenj
+  * pass .c file to mkoctfile since it may need special compilation flags
+  pass .c file to mkoctfile since it may need special compilation flags
+  (e.g. -fPIC)
+  
+
+    M ./Makefile.am -1 +1
+
+Fri Sep  2 17:39:01 EDT 2005  stevenj
+  * version bump
+
+    M ./COPYING -1 +2
+    M ./NEWS +8
+    M ./arrayh4.c -1 +1
+    M ./arrayh5.c -1 +1
+    M ./configure.ac -1 +1
+    M ./copyright.h -1 +1
+    M ./h4fromh5.c -1 +1
+    M ./h5fromh4.1 -2 +2
+    M ./h5fromh4.c -1 +1
+    M ./h5fromitxt.c -1 +1
+    M ./h5fromtxt.1 -2 +2
+    M ./h5fromtxt.c -1 +1
+    M ./h5math.1 -3 +3
+    M ./h5math.c -1 +1
+    M ./h5topng.c -1 +1
+    M ./h5totxt.1 -2 +2
+    M ./h5totxt.c -1 +1
+    M ./h5tov5d.1 -2 +2
+    M ./h5tov5d.c -2 +2
+    M ./h5tovtk.1 -1 +1
+    M ./h5tovtk.c -1 +1
+    M ./h5utils.c -1 +1
+    M ./writepng.c -1 +1
+
+Fri Sep  2 15:23:48 EDT 2005  stevenj
+  * added h4fromh5.1, and added -T option to h4fromh5
+
+    A ./h4fromh5.1
+    M ./h4fromh5.c -2 +9
+
+Fri Jul 15 13:37:56 EDT 2005  stevenj
+  * added h4fromh5 (no man page yet)
+
+    M ./Makefile.am -1 +4
+    M ./autogen.sh -1 +1
+    M ./configure.ac -11 +20
+    A ./h4fromh5.c
+
+Fri Jul 15 12:33:34 EDT 2005  stevenj
+  * added autogen.sh
+
+    A ./autogen.sh
+    M ./install-sh -52 +50
+
+Fri Jun 17 13:42:38 EDT 2005  stevenj
+  * improve contrast by making dark-light transitions more gradual
+
+    M ./colormaps/dkbluered -7 +31
+
+Thu Jun 16 15:35:02 EDT 2005  stevenj
+  * added dkbluered colormap, slightly simplified winter colormap
+
+    M ./Makefile.am -1 +1
+    A ./colormaps/dkbluered
+    M ./colormaps/winter -15 +1
+
+Mon Aug 16 16:28:40 EDT 2004  stevenj
+  * simplified
+
+    M ./colormaps/autumn -15 +1
+    M ./colormaps/cool -15 +1
+
+Thu Aug  5 00:53:49 EDT 2004  stevenj
+  * version bump
+
+    M ./NEWS +5
+    M ./configure.ac -1 +1
+
+Tue Aug  3 13:08:30 EDT 2004  stevenj
+  * don't mix declarations with code (thanks to Maarten van Reeuwijk for the bug report)
+
+    M ./h5topng.c -1 +2
+
+Mon Jul 12 21:11:30 EDT 2004  stevenj
+  tagged h5utils-1-9 
+
+
+Mon Jul 12 21:11:30 EDT 2004  stevenj
+  * updated NEWS for 1.9
+
+    M ./NEWS -1 +8
+
+Mon Jul 12 21:04:45 EDT 2004  stevenj
+  * update for latest libmatheval
+
+    M ./configure.ac -1 +1
+    M ./h5math.c -8 +16
+
+Sat Jun  5 11:30:54 EDT 2004  stevenj
+  * support Matlab-like notation for slices, tiling overlay/contour to cover data
+
+    M ./arrayh5.c +44
+    M ./arrayh5.h +2
+    M ./h5topng.1.in -4 +14
+    M ./h5topng.c -34 +125
+    M ./writepng.c -32 +37
+    M ./writepng.h +2
+
+Mon May 24 00:51:58 EDT 2004  stevenj
+  * version bump
+
+    M ./NEWS +6
+    M ./configure.ac -1 +1
+
+Mon May 24 00:49:42 EDT 2004  stevenj
+  * added h5math man page etc.
+
+    A ./h5math.1
+    M ./h5math.c -4 +4
+
+Mon May 24 00:32:20 EDT 2004  stevenj
+  * whoops
+
+    M ./h5tov5d.1 -1 +1
+
+Sun May 23 23:32:54 EDT 2004  stevenj
+  * wrapping
+
+    M ./h5math.c -1 +2
+
+Sun May 23 23:11:34 EDT 2004  stevenj
+  * fixed copyright dates in man pages
+
+    M ./h5fromh4.1 -2 +2
+    M ./h5fromtxt.1 -2 +2
+    M ./h5topng.1.in -2 +2
+    M ./h5totxt.1 -2 +2
+    M ./h5tov5d.1 -2 +2
+    M ./h5tovtk.1 -1 +1
+
+Sun May 23 22:14:49 EDT 2004  stevenj
+  * whoops
+
+    M ./h5math.c -2 +4
+
+Sun May 23 22:10:36 EDT 2004  stevenj
+  * make "t" variable the same as the last dimension, consistent with slice convention
+
+    M ./h5math.c -3 +3
+
+Sun May 23 22:05:31 EDT 2004  stevenj
+  * added h5math utility (still needs man page)
+
+    M ./Makefile.am -2 +5
+    M ./configure.ac -1 +13
+    A ./h5math.c
+
+Sun May 23 20:21:52 EDT 2004  stevenj
+  * use my_strdup everywhere, get rid of some compiler warnings
+
+    M ./h5fromh4.c -12 +4
+    M ./h5fromitxt.c -14 +8
+    M ./h5fromtxt.c -10 +4
+    M ./h5topng.c -8
+    M ./h5totxt.c -15 +4
+    M ./h5tov5d.c -8 +2
+    M ./h5tovtk.c -8 +2
+    M ./h5utils.c +11
+    M ./h5utils.h +1
+
+Sat May 22 13:37:54 EDT 2004  stevenj
+  tagged h5utils-1-8 
+
+
+Sat May 22 13:37:54 EDT 2004  stevenj
+  * vpath build
+
+    M ./Makefile.am -1 +1
+
+Sat May 22 13:23:35 EDT 2004  stevenj
+  * fixed some formatting problems
+
+    M ./h5topng.1.in -9 +16
+
+Sat May 22 13:19:22 EDT 2004  stevenj
+  * make sure EXTRA_MANS is distributed
+
+    M ./Makefile.am -2 +2
+
+Sat May 22 12:58:44 EDT 2004  stevenj
+  * planned release date
+
+    M ./NEWS -1 +1
+
+Fri May 21 20:55:40 EDT 2004  stevenj
+  * whoops, missing '0'
+
+    M ./h5tovtk.c +3
+
+Fri May 21 20:51:40 EDT 2004  stevenj
+  * note more digits
+
+    M ./NEWS -1 +2
+
+Fri May 21 20:50:14 EDT 2004  stevenj
+  * whoops, screwed up slices
+
+    M ./arrayh5.c -23 +7
+    M ./h5totxt.c -2 +1
+
+Fri May 21 20:34:35 EDT 2004  stevenj
+  * don't know release date yet
+
+    M ./NEWS -1 +1
+
+Fri May 21 20:32:49 EDT 2004  stevenj
+  * new version
+
+    M ./NEWS +24
+    M ./configure.ac -1 +1
+
+Fri May 21 20:25:18 EDT 2004  stevenj
+  * mkdist script
+
+    A ./mkdist.sh
+
+Fri May 21 20:24:48 EDT 2004  stevenj
+  * generate automatically
+
+    M ./ChangeLog -256 +1
+
+Fri May 21 20:23:41 EDT 2004  stevenj
+  * add latest colormaps
+
+    M ./Makefile.am -4 +5
+
+Fri May 21 20:19:06 EDT 2004  stevenj
+  * check for -8 with -A
+
+    M ./h5topng.c +3
+
+Fri May 21 20:17:57 EDT 2004  stevenj
+  * default to 24-bit output, -8 for old behavior
+
+    M ./h5topng.1.in -1 +7
+    M ./h5topng.c -5 +11
+    M ./writepng.c -29 +50
+    M ./writepng.h -2 +2
+
+Fri May 21 19:50:52 EDT 2004  stevenj
+  * updated man pages
+
+    M ./h5topng.1.in -21 +54
+    M ./h5totxt.1 -28 +30
+    M ./h5tov5d.1 -1 +27
+    M ./h5tovtk.1 +29
+
+Fri May 21 18:59:28 EDT 2004  stevenj
+  * added translucent overlay option
+
+    M ./arrayh4.c -1 +1
+    M ./arrayh5.c -2 +2
+    M ./colormaps/bluered -1 +1
+    M ./colormaps/gray -1 +1
+    A ./colormaps/green
+    A ./colormaps/yarg
+    A ./colormaps/yellow
+    M ./copyright.h -1 +1
+    M ./h5fromh4.c -1 +1
+    M ./h5fromitxt.c -1 +1
+    M ./h5fromtxt.c -1 +1
+    M ./h5topng.c -64 +154
+    M ./h5totxt.c -1 +1
+    M ./h5tov5d.c -2 +2
+    M ./h5tovtk.c -1 +1
+    M ./h5utils.c -1 +1
+    M ./writepng.c -21 +101
+    M ./writepng.h -2 +4
+
+Fri May 21 16:12:05 EDT 2004  stevenj
+  * make nx = cols by default in h5topng
+
+    M ./h5topng.c -1 +1
+
+Fri May 21 16:10:58 EDT 2004  stevenj
+  * INSTALL is supplied by automake --add-missing
+
+    R ./INSTALL
+
+Fri May 21 16:10:23 EDT 2004  stevenj
+  * support multiple slice dimensions
+
+    M ./INSTALL -23 +26
+    M ./Makefile.am -1 +2
+    M ./arrayh5.c -65 +103
+    M ./arrayh5.h -1 +6
+    M ./configure.ac -2 +17
+    M ./h5fromitxt.c -2 +1
+    M ./h5read.cc -2 +2
+    M ./h5topng.c -18 +32
+    M ./h5totxt.c -36 +35
+    M ./h5tov5d.c -14 +50
+    M ./h5tovtk.c -4 +29
+    M ./install-sh -178 +252
+
+Mon Mar  1 21:28:44 EST 2004  stevenj
+  * added h5fromitxt
+
+    M ./Makefile.am -1 +2
+    A ./h5fromitxt.c
+
+Mon Jul 15 13:27:27 EDT 2002  stevenj
+  tagged h5utils-1-7-2 
+
+
+Mon Jul 15 13:27:27 EDT 2002  stevenj
+  * C++ fix for g++ 3.x, from Josselin Mouette
+
+    M ./h5read.cc -1 +1
+
+Fri Jun 14 19:48:39 EDT 2002  stevenj
+  * follow gd lib in initializing alpha before palette (don't know if it matters)
+
+    M ./writepng.c -5 +4
+
+Fri Jun 14 19:48:07 EDT 2002  stevenj
+  * don't use colormap dir for ./<colormap> or /<colormap>
+
+    M ./h5topng.c -1 +2
+
+Wed May 29 23:37:54 EDT 2002  stevenj
+  * added -a and -. flags
+
+    M ./h5totxt.1 +13
+    M ./h5totxt.c -18 +60
+
+Sat Mar 16 17:46:44 EST 2002  stevenj
+  * added 1.7.1 notes
+
+    M ./NEWS +5
+
+Sat Mar 16 17:15:16 EST 2002  stevenj
+  * fixed h5fromh4 and make dist
+
+    M ./Makefile.am -7 +9
+    M ./configure.ac -2 +2
+
+Sat Mar 16 16:58:28 EST 2002  stevenj
+  tagged h5utils-1-7-1 
+
+
+Sat Mar 16 16:58:28 EST 2002  stevenj
+  * fixed array overrun causing floating-point exceptions on Alpha (thanks to Marin Soljacic for the bug report)
+
+    M ./writepng.c -5 +7
+
+Thu Mar 14 03:06:28 EST 2002  stevenj
+  * use automake
+
+    A ./Makefile.am
+    R ./Makefile.in
+    A ./configure.ac
+    R ./configure.in
+    M ./h5fromh4.c -1 +1
+    M ./h5fromtxt.c -1 +1
+    M ./h5topng.c -2 +2
+    M ./h5totxt.c -1 +1
+    M ./h5tov5d.c -1 +1
+    M ./h5tovtk.c -1 +1
+
+Wed Mar 13 18:48:05 EST 2002  stevenj
+  * use mandir
+
+    M ./Makefile.in -18 +19
+
+Sun Mar 10 19:47:30 EST 2002  stevenj
+  * added URL
+
+    M ./README +1
+
+Sat Mar  9 16:48:15 EST 2002  stevenj
+  tagged h5utils-1-7 
+
+
+Sat Mar  9 16:48:15 EST 2002  stevenj
+  * print warning for -c <h5file>
+
+    M ./h5topng.c -2 +3
+
+Sat Mar  9 16:35:59 EST 2002  stevenj
+  * whoops
+
+    M ./Makefile.in -1 +1
+
+Sat Mar  9 16:29:19 EST 2002  stevenj
+  * updated dates
+
+    M ./NEWS -1 +1
+    M ./h5fromh4.1 -1 +1
+    M ./h5fromtxt.1 -1 +1
+    M ./h5topng.1.in -1 +1
+    M ./h5totxt.1 -1 +1
+    M ./h5tov5d.1 -1 +1
+    M ./h5tovtk.1 -1 +1
+
+Sat Mar  9 15:13:29 EST 2002  stevenj
+  * made more GNU-ly correct
+
+    A ./INSTALL
+    A ./README
+    R ./README-h5utils.html
+
+Sat Mar  9 15:09:26 EST 2002  stevenj
+  * added AUTHORS file to be GNU-ly correct
+
+    A ./AUTHORS
+
+Tue Mar  5 02:23:55 EST 2002  stevenj
+  * eliminated code duplication
+
+    M ./Makefile.in -9 +9
+    M ./h5fromh4.c -43 +3
+    M ./h5fromtxt.c -28 +1
+    M ./h5topng.c -42 +3
+    M ./h5totxt.c -28 +1
+    M ./h5tov5d.c -48 +1
+    M ./h5tovtk.c -62 +4
+    A ./h5utils.c
+    A ./h5utils.h
+
+Tue Mar  5 02:06:31 EST 2002  stevenj
+  * finally fixed garbage pixels bug in h5topng
+
+    M ./NEWS +3
+    M ./writepng.c -10 +9
+
+Tue Mar  5 01:36:21 EST 2002  stevenj
+  * added -0 option
+
+    M ./NEWS +3
+    M ./arrayh5.c -51 +55
+    M ./arrayh5.h -1 +2
+    M ./h5read.cc -1 +1
+    M ./h5topng.1.in -1 +8
+    M ./h5topng.c -4 +9
+    M ./h5totxt.1 -1 +8
+    M ./h5totxt.c -3 +8
+    M ./h5tov5d.c -3 +3
+    M ./h5tovtk.c -1 +1
+
+Tue Mar  5 00:03:20 EST 2002  stevenj
+  * added -R option
+
+    M ./NEWS +3
+    M ./h5topng.1.in -1 +9
+    M ./h5topng.c -16 +40
+
+Mon Mar  4 23:25:15 EST 2002  stevenj
+  * added alpha channel support to color maps
+
+    M ./colormaps/autumn -16 +16
+    M ./colormaps/bluered -3 +3
+    M ./colormaps/bone -64 +64
+    M ./colormaps/colorcube -64 +64
+    M ./colormaps/cool -16 +16
+    M ./colormaps/copper -64 +64
+    M ./colormaps/flag -64 +64
+    M ./colormaps/gray -2 +2
+    M ./colormaps/hot -64 +64
+    M ./colormaps/hsv -64 +64
+    M ./colormaps/jet -16 +16
+    M ./colormaps/lines -64 +64
+    M ./colormaps/pink -64 +64
+    M ./colormaps/prism -16 +16
+    M ./colormaps/spring -16 +16
+    M ./colormaps/summer -16 +16
+    M ./colormaps/vga -16 +16
+    M ./colormaps/winter -16 +16
+    M ./h5topng.1.in -3 +4
+    M ./h5topng.c -12 +13
+    M ./writepng.c -4 +31
+    M ./writepng.h -3 +3
+
+Mon Mar  4 22:22:11 EST 2002  stevenj
+  * better error message for -c (catches common mistake)
+
+    M ./h5topng.c -4 +7
+
+Mon Mar  4 22:21:45 EST 2002  stevenj
+  * slight improvements
+
+    M ./h5topng.1.in -8 +7
+
+Mon Mar  4 20:31:24 EST 2002  stevenj
+  * have built-in gray colormap fallback
+
+    M ./h5topng.c -9 +24
+
+Sun Mar  3 23:48:26 EST 2002  stevenj
+  * minor improvements; noted hsv
+
+    M ./h5topng.1.in -8 +11
+
+Sun Mar  3 23:33:46 EST 2002  stevenj
+  * whoops
+
+    R ./h5topng.1
+
+Sun Mar  3 23:32:56 EST 2002  stevenj
+  * linewrapped
+
+    A ./h5topng.1
+    M ./h5topng.1.in -2 +6
+
+Sun Mar  3 23:32:16 EST 2002  stevenj
+  * updated for 1.7
+
+    M ./NEWS +15
+
+Sun Mar  3 23:22:43 EST 2002  stevenj
+  * added
+
+    A ./ChangeLog
+
+Sun Mar  3 23:21:28 EST 2002  stevenj
+  * 2002 copyright year update
+
+    M ./COPYING -1 +1
+    M ./README-h5utils.html -1 +1
+    M ./arrayh4.c -1 +1
+    M ./arrayh4.h -1 +1
+    M ./arrayh5.c -1 +1
+    M ./arrayh5.h -1 +1
+    M ./copyright.h -1 +1
+    M ./h5fromh4.1 -2 +2
+    M ./h5fromh4.c -1 +1
+    M ./h5fromtxt.1 -2 +2
+    M ./h5fromtxt.c -1 +1
+    M ./h5read.cc -1 +1
+    M ./h5topng.1.in -2 +2
+    M ./h5topng.c -1 +1
+    M ./h5totxt.1 -2 +2
+    M ./h5totxt.c -1 +1
+    M ./h5tov5d.1 -2 +2
+    M ./h5tov5d.c -2 +2
+    M ./writepng.c -1 +1
+    M ./writepng.h -1 +1
+
+Sun Mar  3 23:17:58 EST 2002  stevenj
+  * fixed h5tovtk man page
+
+    M ./h5tovtk.1 -16 +68
+    M ./h5tovtk.c -6 +6
+
+Fri Mar  1 02:28:33 EST 2002  stevenj
+  * noted location of colormap files
+
+    M ./h5topng.c +1
+
+Fri Mar  1 02:10:52 EST 2002  stevenj
+  * added variable colormap support
+
+    M ./Makefile.in -2 +13
+    M ./configure.in -1 +14
+    R ./h5topng.1
+    A ./h5topng.1.in
+    M ./h5topng.c -5 +83
+    M ./writepng.c -16 +13
+    M ./writepng.h -3 +7
+
+Fri Mar  1 02:10:26 EST 2002  stevenj
+  * synced with latest arrayh5
+
+    M ./h5read.cc -1 +1
+
+Fri Mar  1 01:11:37 EST 2002  stevenj
+  * added some color map files
+
+    A ./colormaps/
+    A ./colormaps/autumn
+    A ./colormaps/bluered
+    A ./colormaps/bone
+    A ./colormaps/colorcube
+    A ./colormaps/cool
+    A ./colormaps/copper
+    A ./colormaps/flag
+    A ./colormaps/gray
+    A ./colormaps/hot
+    A ./colormaps/hsv
+    A ./colormaps/jet
+    A ./colormaps/lines
+    A ./colormaps/pink
+    A ./colormaps/prism
+    A ./colormaps/spring
+    A ./colormaps/summer
+    A ./colormaps/vga
+    A ./colormaps/winter
+
+Sat Jan  5 15:15:11 EST 2002  stevenj
+  * added preliminary h5tovtk
+
+    M ./Makefile.in -2 +16
+    M ./arrayh5.c -1 +5
+    M ./arrayh5.h -1 +1
+    M ./configure.in -1 +28
+    M ./h5topng.c -2 +2
+    M ./h5totxt.c -1 +1
+    M ./h5tov5d.c -3 +3
+    A ./h5tovtk.1
+    A ./h5tovtk.c
+
+Mon Oct 15 20:47:15 EDT 2001  stevenj
+  * Use CPPFLAGS and LDFLAGS when calling mkoctfile!  Thanks to Max Colice
+  Use CPPFLAGS and LDFLAGS when calling mkoctfile!  Thanks to Max Colice
+  for the bug report.
+  
+
+    M ./Makefile.in -2 +2
+
+Tue Oct  2 01:09:50 EDT 2001  stevenj
+  * whoops, fixed datatype in -T mode
+
+    M ./h5tov5d.c -10 +8
+
+Sat Sep 22 19:21:04 EDT 2001  stevenj
+  * slight bug fix in -T (?)
+
+    M ./h5tov5d.c -3 +10
+
+Sat Sep 22 18:54:36 EDT 2001  stevenj
+  * added -T option to h5tov5d
+
+    M ./NEWS +2
+    M ./h5tov5d.1 +3
+    M ./h5tov5d.c -26 +46
+
+Sun Mar 18 01:32:07 EST 2001  stevenj
+  * whoops, fixed problem when --without-h5tov5d and --without-h5fromh4 are used.  Thanks to Nikola Ivanov Nikolov for the fix.
+
+    M ./Makefile.in -2 +1
+
+Wed Feb 14 13:48:01 EST 2001  stevenj
+  * minor fix
+
+    M ./h5fromtxt.1 -1 +1
+
+Wed Jan 17 00:05:12 EST 2001  stevenj
+  tagged h5utils-1-6 
+
+
+Wed Jan 17 00:05:12 EST 2001  stevenj
+  * Don't build h5fromh4 if h4toh5 is present.  Bumped version and copyright year.
+
+    M ./COPYING -1 +1
+    M ./NEWS +6
+    M ./README-h5utils.html -1 +1
+    M ./arrayh4.c -1 +1
+    M ./arrayh4.h -1 +1
+    M ./arrayh5.c -1 +1
+    M ./arrayh5.h -1 +1
+    M ./configure.in -8 +21
+    M ./copyright.h -1 +1
+    M ./h5fromh4.1 -2 +2
+    M ./h5fromh4.c -1 +1
+    M ./h5fromtxt.1 -2 +2
+    M ./h5fromtxt.c -1 +1
+    M ./h5read.cc -1 +1
+    M ./h5topng.1 -2 +2
+    M ./h5topng.c -1 +1
+    M ./h5totxt.1 -2 +2
+    M ./h5totxt.c -1 +1
+    M ./h5tov5d.1 -2 +2
+    M ./h5tov5d.c -2 +2
+    M ./writepng.c -1 +1
+    M ./writepng.h -1 +1
+
+Sat Dec  9 02:01:59 EST 2000  stevenj
+  * 'make dist' should call autoheader
+
+    M ./Makefile.in -1 +1
+
+Sat Dec  9 02:00:21 EST 2000  stevenj
+  * bumped version number
+
+    M ./NEWS +7
+    M ./configure.in -1 +1
+
+Sat Dec  9 01:58:37 EST 2000  stevenj
+  * Support disabling Octave plugin manually, in case of C++ craziness.
+  Support disabling Octave plugin manually, in case of C++ craziness.
+  Support Vis5d+ header file locations.  Support Debian HDF header file
+  locations.  Use autoheader.
+  
+
+    M ./Makefile.in -1 +1
+    M ./arrayh4.h -1 +5
+    R ./config.h.in
+    M ./configure.in -3 +15
+    M ./h5tov5d.c -1 +3
+
+Fri Jul 28 07:58:39 EDT 2000  stevenj
+  * fixed bug in contour plotting
+
+    M ./writepng.c -7 +11
+
+Sun Jul  9 22:39:52 EDT 2000  stevenj
+  * updated
+
+    M ./NEWS -1 +1
+
+Sun Jul  9 00:43:19 EDT 2000  stevenj
+  * Note that HDF4 libraries are required for h5fromh4.
+
+    M ./README-h5utils.html +3
+
+Sun Jul  9 00:41:45 EDT 2000  stevenj
+  * documented h5fromh4
+
+    M ./README-h5utils.html +8
+
+Tue May 30 02:14:21 EDT 2000  stevenj
+  * Added -S <s> option to h5topng as a shortcut for -X <s> -Y <s>.
+
+    M ./NEWS +2
+    M ./h5topng.1 -2 +4
+    M ./h5topng.c -1 +5
+
+Mon May 29 15:00:00 EDT 2000  stevenj
+  * bumped version
+
+    M ./NEWS -1 +5
+    M ./configure.in -1 +1
+
+Mon May 29 14:56:38 EDT 2000  stevenj
+  * slight fixes
+
+    M ./h5fromh4.1 -5 +7
+
+Mon May 29 14:52:33 EDT 2000  stevenj
+  * added h5fromh4 man page
+
+    A ./h5fromh4.1
+
+Mon May 29 04:51:07 EDT 2000  stevenj
+  * added h5fromh4
+
+    M ./Makefile.in -2 +17
+    A ./arrayh4.c
+    A ./arrayh4.h
+    M ./configure.in +10
+    A ./h5fromh4.c
+
+Mon May 29 04:37:47 EDT 2000  stevenj
+  * got rid of spurious "sep" variable
+
+    M ./h5fromtxt.c -6
+
+Sun May 28 19:13:08 EDT 2000  stevenj
+  tagged h5utils-1-4 
+
+
+Sun May 28 19:13:08 EDT 2000  stevenj
+  * added h5fromtxt
+
+    M ./Makefile.in -2 +16
+    M ./NEWS +4
+    M ./README-h5utils.html +11
+    M ./arrayh5.c -16 +125
+    M ./arrayh5.h +4
+    M ./configure.in -1 +1
+    A ./h5fromtxt.1
+    A ./h5fromtxt.c
+    M ./h5topng.c -1 +1
+    M ./h5totxt.c -1 +1
+    M ./h5tov5d.c -1 +1
+
+Mon Jan 31 22:14:43 EST 2000  stevenj
+  tagged h5utils-1-3-4 
+
+
+Mon Jan 31 22:14:43 EST 2000  stevenj
+  * slight correction
+
+    M ./h5topng.1 -1 +1
+
+Mon Jan 31 22:05:30 EST 2000  stevenj
+  * fix so it works without -C!
+
+    M ./h5topng.c -1 +2
+
+Mon Jan 31 22:02:17 EST 2000  stevenj
+  * bumped version
+
+    M ./NEWS +6
+    M ./configure.in -1 +1
+
+Mon Jan 31 21:59:32 EST 2000  stevenj
+  * improved crude contour feature
+
+    M ./h5topng.1 -2 +2
+    M ./h5topng.c -9 +11
+    M ./writepng.c -41 +45
+    M ./writepng.h -5 +2
+
+Mon Jan 31 20:43:28 EST 2000  stevenj
+  * Fixed display bug; thanks to Christoph Becher for the correction.
+
+    M ./h5topng.1 -2 +5
+
+Sun Jan 30 14:13:13 EST 2000  stevenj
+  * credited 1.3.3 bug report
+
+    M ./NEWS +1
+
+Sun Jan 30 14:06:09 EST 2000  stevenj
+  tagged h5utils-1-3-3 
+
+
+Sun Jan 30 14:06:09 EST 2000  stevenj
+  * bumped version
+
+    M ./configure.in -1 +1
+
+Sun Jan 30 14:04:32 EST 2000  stevenj
+  * got rid of compiler warning
+
+    M ./NEWS +4
+    M ./arrayh5.c -2 +2
+
+Sun Jan 30 14:04:07 EST 2000  stevenj
+  * bug fix (uninitialized var)
+
+    M ./writepng.c -2 +1
+
+Fri Jan 28 21:26:20 EST 2000  stevenj
+  tagged h5utils-1-3-2 
+
+
+Fri Jan 28 21:26:20 EST 2000  stevenj
+  * added -Z option
+
+    M ./NEWS +2
+    M ./h5topng.1 -1 +5
+    M ./h5topng.c -1 +11
+
+Fri Jan 28 18:03:46 EST 2000  stevenj
+  * fixed typo
+
+    M ./h5topng.c -1 +1
+
+Fri Jan 28 18:01:28 EST 2000  stevenj
+  * now support h5topng -C filename:dataset
+
+    M ./NEWS +4
+    M ./configure.in -1 +1
+    M ./h5topng.1 -2 +4
+    M ./h5topng.c -2 +9
+
+Thu Jan 27 19:54:35 EST 2000  stevenj
+  tagged h5utils-1-3-1 
+
+
+Thu Jan 27 19:54:35 EST 2000  stevenj
+  * bumped version
+
+    M ./NEWS +5
+    M ./configure.in -1 +1
+
+Thu Jan 27 19:34:54 EST 2000  stevenj
+  * fixed bug in joining hdf5 files
+
+    M ./h5tov5d.c -1 +1
+
+Thu Jan 27 15:44:19 EST 2000  stevenj
+  * fixed handling of -d option so that it doesn't get overriden if only
+  fixed handling of -d option so that it doesn't get overriden if only
+  a single file specifies a dataset via fname:dataset.
+  
+
+    M ./h5topng.c -3 +7
+    M ./h5totxt.c -3 +6
+
+Fri Jan 21 14:12:29 EST 2000  stevenj
+  tagged h5utils-1-3 
+
+
+Fri Jan 21 14:12:29 EST 2000  stevenj
+  * documented changes
+
+    M ./NEWS +6
+    M ./README-h5utils.html +6
+
+Thu Jan 20 22:44:13 EST 2000  stevenj
+  * detect -lv5d library
+
+    M ./Makefile.in -1 +1
+    M ./config.h.in +3
+    M ./configure.in -2 +5
+    M ./h5tov5d.c -5 +6
+
+Thu Jan 20 22:36:57 EST 2000  stevenj
+  * added filename:dataset syntax
+
+    M ./arrayh5.c -1
+    M ./arrayh5.h +1
+    M ./configure.in -1 +1
+    M ./h5topng.1 -1 +3
+    M ./h5topng.c -6 +41
+    M ./h5totxt.1 -1 +3
+    M ./h5totxt.c -8 +43
+    M ./h5tov5d.1 -1 +3
+    M ./h5tov5d.c -7 +53
+
+Thu Jan 20 20:35:10 EST 2000  stevenj
+  tagged h5utils-1-2-3 
+
+
+Thu Jan 20 20:35:10 EST 2000  stevenj
+  * bumped version
+
+    M ./NEWS +4
+    M ./configure.in -1 +1
+
+Thu Jan 20 20:33:39 EST 2000  stevenj
+  * fixed help message
+
+    M ./h5totxt.c -1 +1
+
+Wed Jan 12 22:52:25 EST 2000  stevenj
+  * use CPPFLAGS when compiling
+
+    M ./Makefile.in -1 +2
+    M ./NEWS +6
+    M ./configure.in -1 +1
+
+Sat Jan  1 12:47:34 EST 2000  stevenj
+  * h5tov5d -o now joins; bumped copyright year
+
+    M ./COPYING -1 +1
+    M ./NEWS +4
+    M ./README-h5utils.html -1 +1
+    M ./arrayh5.c -1 +1
+    M ./arrayh5.h -1 +1
+    M ./configure.in -1 +1
+    M ./copyright.h -1 +1
+    M ./h5read.cc -1 +1
+    M ./h5topng.1 -2 +2
+    M ./h5topng.c -1 +1
+    M ./h5totxt.1 -2 +2
+    M ./h5totxt.c -1 +1
+    M ./h5tov5d.1 -6 +12
+    M ./h5tov5d.c -117 +166
+    M ./writepng.c -1 +1
+    M ./writepng.h -1 +1
+
+Fri Dec 31 21:43:44 EST 1999  stevenj
+  tagged h5utils-1-2 
+
+
+Fri Dec 31 21:43:44 EST 1999  stevenj
+  * noted changes
+
+    M ./NEWS +8
+
+Fri Dec 31 21:41:01 EST 1999  stevenj
+  * bumped version
+
+    M ./configure.in -1 +1
+
+Fri Dec 31 21:20:43 EST 1999  stevenj
+  * noted man page
+
+    M ./README-h5utils.html +3
+
+Fri Dec 31 21:17:38 EST 1999  stevenj
+  * updated license
+
+    M ./README-h5utils.html +22
+
+Fri Dec 31 21:05:29 EST 1999  stevenj
+  * added h5tov5d
+
+    M ./COPYING -21 +373
+    M ./Makefile.in -6 +32
+    M ./README-h5utils.html -2 +31
+    M ./configure.in +27
+    A ./copyright.h
+    M ./h5topng.c -23 +1
+    M ./h5totxt.c -23 +1
+    A ./h5tov5d.1
+    A ./h5tov5d.c
+
+Fri Dec 31 16:58:12 EST 1999  stevenj
+  * some cleanup
+
+    M ./configure.in -2 +9
+
+Fri Dec 31 16:55:39 EST 1999  stevenj
+  * Better documentation of (revised) installation.
+
+    M ./README-h5utils.html -6 +9
+
+Fri Dec 31 16:46:31 EST 1999  stevenj
+  * install h5read.oct in right place
+
+    M ./Makefile.in -4 +13
+    M ./configure.in +18
+
+Fri Dec 31 16:01:41 EST 1999  stevenj
+  * fixed install/uninstall rules so that they ignore things that aren't built
+
+    M ./Makefile.in -6 +27
+
+Mon Dec  6 17:49:46 EST 1999  stevenj
+  * small fixes
+
+    M ./README-h5utils.html -4 +5
+
+Mon Dec  6 17:40:56 EST 1999  stevenj
+  * added h5totxt
+
+    M ./Makefile.in -7 +14
+    A ./NEWS
+    M ./README-h5utils.html +8
+    M ./configure.in -1 +1
+    A ./h5totxt.1
+    A ./h5totxt.c
+
+Mon Nov 22 00:02:13 EST 1999  stevenj
+  tagged h5utils-1-0 
+
+
+Mon Nov 22 00:02:13 EST 1999  stevenj
+  * don't strip (-s) man page!!
+
+    M ./Makefile.in -1 +1
+
+Sun Nov 21 23:50:36 EST 1999  stevenj
+  * changed README to HTML
+
+    R ./README
+    A ./README-h5utils.html
+
+Sun Nov 21 23:01:59 EST 1999  stevenj
+  * added man page
+
+    M ./Makefile.in +2
+    M ./README -1 +2
+    A ./h5topng.1
+
+Sun Nov 21 21:41:52 EST 1999  stevenj
+  * got rid of garbage file
+
+    R ./.png
+
+Sun Nov 21 21:39:48 EST 1999  stevenj
+  * made sure 'make clean' gets rid of h5read.o
+
+    M ./Makefile.in -1 +1
+
+Sun Nov 21 21:39:04 EST 1999  stevenj
+  * various fixes
+
+    M ./config.h.in +2
+    M ./configure.in -1 +1
+    M ./h5topng.c -4 +39
+
+Sun Nov 21 21:27:45 EST 1999  stevenj
+  * comment-ized license
+
+    M ./COPYING -19 +21
+
+Sun Nov 21 21:26:49 EST 1999  stevenj
+  * added copyright notices
+
+    M ./arrayh5.c +22
+    M ./arrayh5.h +22
+    M ./h5read.cc +22
+    M ./h5topng.c +22
+    M ./writepng.c +22
+    M ./writepng.h -1 +36
+
+Sun Nov 21 21:22:47 EST 1999  stevenj
+  * fixed clean targets
+
+    M ./Makefile.in -1 +4
+
+Sun Nov 21 21:20:16 EST 1999  stevenj
+  * added MIT license
+
+    A ./COPYING
+
+Sun Nov 21 21:19:54 EST 1999  stevenj
+  * autoconfiscated
+
+    R ./Makefile
+    A ./Makefile.in
+    A ./config.h.in
+    A ./configure.in
+    A ./install-sh
+
+Sun Nov 21 20:49:08 EST 1999  stevenj
+  * deleted extraneous files
+
+    R ./.indent.pro
+    R ./README.writepng
+
+Sun Nov 21 20:48:36 EST 1999  stevenj
+  * added README
+
+    A ./README
+
+Sun Nov 21 20:24:59 EST 1999  stevenj
+  * Initial revision
+
+    A ./.indent.pro
+    A ./.png
+    A ./Makefile
+    A ./README.writepng
+    A ./arrayh5.c
+    A ./arrayh5.h
+    A ./h5read.cc
+    A ./h5topng.c
+    A ./writepng.c
+    A ./writepng.h

@@ -1,0 +1,45 @@
+# vim: syntax=make
+
+# Standard compiler and linker flags for GCC environments. Assumes that
+# OpenMPI is being used. Can set `DYNAMIC_LINKING=yes` to enable dynamic
+# linking of the SpEC libraries.
+
+#-----------------------
+# COMPILER/LINKER FLAGS
+#-----------------------
+WARNINGS = -Wall -Wextra -Woverloaded-virtual \
+           -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings \
+           -Wconversion -Winvalid-pch -Wctor-dtor-privacy \
+           -Wdisabled-optimization -Wold-style-cast
+MARCH_FLAGS = -march=native
+OPTIMIZE = -O3 $(MARCH_FLAGS)
+
+# Suppress -Wliteral-suffix warnings for GCC 4.9+ (see ticket #919).
+# Also add color diagnostics for GCC 4.9+.
+GCC_VER_GEQ49 ?= \
+  $(shell echo `. $(ENVFILE) &>/dev/null; $(CC) -dumpversion | cut -f1-2 -d.` \>= 4.9 | bc)
+export GCC_VER_GEQ49 := $(GCC_VER_GEQ49)
+ifeq ($(GCC_VER_GEQ49),1)
+  WARNINGS += -Wno-literal-suffix -fdiagnostics-color
+endif
+
+# Only compile with dynamic flags when using dynamic linking. In principle,
+# we want -fPIC regardless (to avoid needing a full recompile when switching
+# dynamic linking on or off), but it can prevent some implicit optimizations.
+ifeq ($(DYNAMIC_LINKING),yes)
+  DYNAMIC_LDFLAGS = -Wl,--no-as-needed
+  DYNAMIC_FLAGS   = -fPIC
+endif
+
+# We never use the C++ MPI bindings, so use the -D flags to skip them.
+# Including them would be ok, except they cause a zillion compiler warnings.
+CPPFLAGS = -DOMPI_SKIP_MPICXX 
+
+C++FLAGS = $(OPTIMIZE) -pipe $(DYNAMIC_FLAGS) $(WARNINGS) -std=c++11 -g -DDEBUG
+CFLAGS   = $(OPTIMIZE) -pipe $(DYNAMIC_FLAGS) -g
+FFLAGS   = $(OPTIMIZE) -pipe $(DYNAMIC_FLAGS) 
+F90FLAGS = $(OPTIMIZE) -pipe $(DYNAMIC_FLAGS)
+
+# Use -rdynamic to add all symbols, which is needed both for dynamic linking
+# and for improved backtraces.
+LDFLAGS = -rdynamic $(DYNAMIC_LDFLAGS)

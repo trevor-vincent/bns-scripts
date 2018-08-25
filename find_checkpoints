@@ -1,0 +1,7 @@
+#!/bin/bash
+
+find . -type d -name "*Checkpoints" -print 2>/dev/null | while read line; do
+    ls -dav $line/*/ 2>/dev/null | while read line; do
+    echo $line
+    done
+done

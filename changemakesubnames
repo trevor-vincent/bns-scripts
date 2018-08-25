@@ -1,0 +1,10 @@
+CURRENT_DIR=${PWD}
+
+find ${CURRENT_DIR} -type f -name 'MakeSubmit.input' -follow | while read line; do
+     DIR="$(dirname ${line})"
+     cd $DIR
+     sed -i "s/Jobname = .*/Jobname = $1/g" MakeSubmit.input	
+     echo "Processing file '$line'"
+done
+
+cd $CURRENT_DIR
