@@ -6,6 +6,7 @@ import csv
 import numpy as np
 import io
 from math import *
+import sys
 
 plt.rc('text', usetex=False)
 plt.rc('font', family='serif')
@@ -28,20 +29,21 @@ fcg_iter = []
 # [11-13] vInertial
 Ye = []
 Minusu_tH = []
-theta_max = 15
+theta_max = float(sys.argv[1])
+print("theta_max = " + str(theta_max));
 
 with io.open(file, mode='r',encoding='utf-8') as f:
     reader = csv.reader(f, delimiter=' ')
     for row in reader:
         Minusu_tH.append(float(row[9]))
         if Minusu_tH[-1] > 1.:
-#           x = float(row[2])
-#           y = float(row[3])
-#            z = float(row[4])
-#            r = sqrt(x**2 + y**2 + z**2)
-#            theta = (acos(z/r))
-#            if (theta < theta_max || theta > pi - theta):
-            Ye.append(float(row[6]))        
+          x = float(row[2])
+          y = float(row[3])
+          z = float(row[4])
+          r = sqrt(x**2 + y**2 + z**2)
+          theta = (acos(z/r))
+          if (theta < theta_max || theta > (pi - theta_max)):
+              Ye.append(float(row[6]))        
 
 # [1] = time
 # [2] = A[B lt      0.000000]

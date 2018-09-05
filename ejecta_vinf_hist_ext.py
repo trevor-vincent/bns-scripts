@@ -7,6 +7,8 @@ import csv
 import numpy as np
 import io
 from math import *
+import math
+import sys
 
 pgf_with_rc_fonts = {"pgf.texsystem": "pdflatex"}
 matplotlib.rcParams.update(pgf_with_rc_fonts)
@@ -37,6 +39,11 @@ Minusu_tH = []
 unb_E = []
 v_inf = []
 
+ejecta_type = sys.argv[1]
+theta_type = sys.argv[2]
+theta_max = float(sys.argv[3])
+
+
 with io.open(file, mode='r',encoding='utf-8') as f:
     reader = csv.reader(f, delimiter=' ')
     for row in reader:
@@ -46,12 +53,21 @@ with io.open(file, mode='r',encoding='utf-8') as f:
             unb_E.append(Rho[-1]*(Minusu_tH[-1] - 1))
             A = unb_E[-1]
             B = Rho[-1]
-#            x = float(row[2])
-#            y = float(row[3])
-#            z =.append(float(row[4])
-#            r = sqrt(x**2 + y**2 + z**2)
-#            theta.append(acos(z/r))
-            v_inf.append(sqrt(1-1/(1+A/B)/(1+A/B)))
+            if theta_max >= 0:
+                if ejecta_type != "left_grid_only":
+                    print("if theta_max >= 0, ejecta must be on_grid_only and not " + str(ejecta_type))
+                    sys.exit()
+                x = float(row[2])
+                y = float(row[3])
+                z = float(row[4])
+                r = sqrt(x**2 + y**2 + z**2)
+                theta = acos(z/r)
+                if theta_type == "polar" and (theta < math.radians(theta_max) or theta > math.radians(180 - theta_max)):
+                    v_inf.append(sqrt(1-1/(1+A/B)/(1+A/B)))
+                elif theta_type == "equatorial" and (theta > math.radians(theta_max) and theta < math.radians(180 - theta_max)):
+                    v_inf.append(sqrt(1-1/(1+A/B)/(1+A/B)))
+            else:
+                v_inf.append(sqrt(1-1/(1+A/B)/(1+A/B)))
         
 # [2] = A[B lt   0.050000000]
 # [3] = A[B lt    0.10000000]
@@ -95,13 +111,26 @@ with io.open("VinfBin.agr", mode='r', encoding='utf-8') as f:
 y = []
 for i in rows[-1]:
     if str(i) != "":
-        y.append(float(i)/1e-8)
+        y.append(float(i))
 
 y.pop(0)
-print(y)
+#print(y)
+
+if ejecta_type == "left_grid_only":
+    print("ejecta_type = left_grid_only")
+elif ejecta_type == "on_grid_only":
+    print("ejecta_type = on_grid_only")
+else:
+    print("ejecta_type = combined")
 
 for j in range(0,len(vinf_bins)):
-    vinf_bin_values[j] += y[j]
+    if ejecta_type == "left_grid_only":
+        vinf_bin_values[j] *= 1e-8
+    elif ejecta_type == "on_grid_only":
+        vinf_bin_values[j] = y[j]
+    else:
+        vinf_bin_values[j] *= 1e-8                   
+        vinf_bin_values[j] += y[j]
 
 fig, ax = plt.subplots()
 index = np.arange(20)
@@ -123,5 +152,5 @@ for label in  ax.xaxis.get_ticklabels()[::2]:
 ax.set_yscale('log')
 
 plt.xlabel(r"$v_\infty$",fontsize=15)
-plt.ylabel(r'Unbound Particles',fontsize=15)
-plt.savefig("vinf_hist.pdf",rasterized=False)
+plt.ylabel(r'Unbound Mass $(M_\odot)$',fontsize=15)
+plt.savefig("vinf_hist_" + str(ejecta_type) + "_" + str(theta_max) + "_" + sys.argv[2] + ".pdf",rasterized=False)

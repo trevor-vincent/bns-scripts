@@ -7,6 +7,7 @@ import csv
 import numpy as np
 import io
 from math import *
+import sys
 
 pgf_with_rc_fonts = {"pgf.texsystem": "pdflatex"}
 matplotlib.rcParams.update(pgf_with_rc_fonts)
@@ -36,6 +37,7 @@ Ye = []
 Minusu_tH = []
 unb_E = []
 v_inf = []
+theta_max = float(sys.argv[1])
 
 with io.open(file, mode='r',encoding='utf-8') as f:
     reader = csv.reader(f, delimiter=' ')
@@ -46,13 +48,14 @@ with io.open(file, mode='r',encoding='utf-8') as f:
             unb_E.append(Rho[-1]*(Minusu_tH[-1] - 1))
             A = unb_E[-1]
             B = Rho[-1]
-#            x = float(row[2])
-#            y = float(row[3])
-#            z =.append(float(row[4])
-#            r = sqrt(x**2 + y**2 + z**2)
-#            theta.append(acos(z/r))
-            v_inf.append(sqrt(1-1/(1+A/B)/(1+A/B)))
-        
+            x = float(row[2])
+            y = float(row[3])
+            z = float(row[4])
+            r = sqrt(x**2 + y**2 + z**2)
+            theta = (acos(z/r))
+            if (theta < theta_max || theta > (pi - theta_max)):
+                v_inf.append(sqrt(1-1/(1+A/B)/(1+A/B)))        
+            
 # [2] = A[B lt   0.050000000]
 # [3] = A[B lt    0.10000000]
 # [4] = A[B lt    0.15000000]

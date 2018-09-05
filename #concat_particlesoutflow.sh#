@@ -28,6 +28,3 @@ do
     cd ../../
 done
 sed -i '/^#/ d' ParticlesFromOutFlowCat.dat
-
-cp "./${1}/Run/MatterObservers/Vinf.agr" .
-cp "./${1}/Run/MatterObservers/Ye.agr" .

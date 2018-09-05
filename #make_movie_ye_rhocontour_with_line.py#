@@ -7,6 +7,33 @@ import matplotlib.pyplot as plt
 import pylab as py
 import os
 import sys
+from math import *
+import math
+
+import matplotlib.lines as mlines
+
+def abline(slope, intercept):
+    """Plot a line from slope and intercept"""
+    axes = plt.gca()
+    x_vals = np.array(axes.get_xlim())
+    y_vals = intercept + slope * x_vals
+    plt.plot(x_vals, y_vals, '--', color='white')
+
+def newline(p1, p2):
+    ax = plt.gca()
+    xmin, xmax = ax.get_xbound()
+
+    if(p2[0] == p1[0]):
+        xmin = xmax = p1[0]
+        ymin, ymax = ax.get_ybound()
+    else:
+        ymax = p1[1]+(p2[1]-p1[1])/(p2[0]-p1[0])*(xmax-p1[0])
+        ymin = p1[1]+(p2[1]-p1[1])/(p2[0]-p1[0])*(xmin-p1[0])
+
+    l = mlines.Line2D([xmin,xmax], [ymin,ymax])
+    ax.add_line(l)
+    return l
+
 
 pgf_with_rc_fonts = {"pgf.texsystem": "pdflatex"}
 matplotlib.rcParams.update(pgf_with_rc_fonts)
@@ -41,6 +68,10 @@ XMax = 220
 YMin = -220
 YMax = 220
 bgcolor = 'black'
+
+RMAX = (XMax - XMin)**2 + (YMax - YMin)**2
+THETA = float(sys.argv[5])
+
 
                                   
 # Function calibrated for SliceData in SpEC                                                                                                                                   
@@ -192,20 +223,15 @@ for t in range(SkipToStep,Nt-1):
     while(NextTime <= LastTime and NextTime >= 0.):
         mDummy,NextTime = GetNextSlice(f,Nx,Ny)
 
-    X = []
+    X = mData[:,:,0]*1.475
     Y = []
 
     if str(sys.argv[4]) == "xz":
-        X = mData[:,:,0]*1.475
         Y = mData[:,:,2]*1.475
     elif str(sys.argv[4]) == "xy":    
-        X = mData[:,:,0]*1.475
         Y = mData[:,:,1]*1.475
-    elif str(sys.argv[4]) == "yz":    
-        X = mData[:,:,1]*1.475
-        Y = mData[:,:,2]*1.475
     else:
-        print("only xz,yz,xy slices supported")
+        print("only xz and xy slices supported")
         exit
 
     F = mData[:,:,3]*Fscale
@@ -261,6 +287,11 @@ for t in range(SkipToStep,Nt-1):
     cbar3.set_label('Rho', labelpad=-20, y=1.075, rotation=0)
     cbar2.set_label('Ye', labelpad=-20, y=1.075, rotation=0)
 #   plt.subplots_adjust(left=0.15, bottom=0.15, top=0.85, right=0.85)
+#    newline([0,0],[RMAX*cos(THETA),RMAX*sin(THETA)])
+#    newline([0,0],[RMAX*cos(THETA + pi/2.),RMAX*sin(THETA + pi/2.)])
+
+    abline(tan( math.radians(90 - THETA)),0)
+    abline(-tan( math.radians(90 - THETA) ), 0)
     plt.savefig(outputname)
     plt.close(fig)
 

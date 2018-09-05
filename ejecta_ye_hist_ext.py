@@ -6,6 +6,8 @@ import csv
 import numpy as np
 import io
 from math import *
+import sys
+import math
 
 plt.rc('text', usetex=False)
 plt.rc('font', family='serif')
@@ -21,14 +23,17 @@ fcg_iter = []
 # [2] Particle mass 
 # [3-5] Coords
 # [6] Rho0Phys
-# [7] Ye
+# [7] ye
 # [8] Temp
 # [9] Minusu_t
 # [10] Minusu_tH
 # [11-13] vInertial
-Ye = []
+ye = []
 Minusu_tH = []
-theta_max = 15
+
+ejecta_type = str(sys.argv[1])
+theta_type = str(sys.argv[2])
+theta_max = float(sys.argv[3])
 
 with io.open(file, mode='r',encoding='utf-8') as f:
     reader = csv.reader(f, delimiter=' ')
@@ -40,8 +45,26 @@ with io.open(file, mode='r',encoding='utf-8') as f:
 #            z = float(row[4])
 #            r = sqrt(x**2 + y**2 + z**2)
 #            theta = (acos(z/r))
+            if theta_max >= 0:
+                if ejecta_type != "left_grid_only":
+                    print("if theta_max >= 0, ejecta must be on_grid_only and not " + str(ejecta_type))
+                    sys.exit()
+                x = float(row[2])
+                y = float(row[3])
+                z = float(row[4])
+                r = sqrt(x**2 + y**2 + z**2)
+                theta = acos(z/r)
+                if theta_type == "polar" and (theta < math.radians(theta_max) or theta > math.radians(180 - theta_max)):
+                    ye.append(float(row[6]))        
+                elif theta_type == "equatorial" and (theta > math.radians(theta_max) and theta < math.radians(180 - theta_max)):
+                    ye.append(float(row[6]))        
+            else:
+                ye.append(float(row[6]))
+
+
+
 #            if (theta < theta_max || theta > pi - theta):
-            Ye.append(float(row[6]))        
+
 
 # [1] = time
 # [2] = A[B lt      0.000000]
@@ -71,9 +94,9 @@ print(ye_bins)
 print(ye_bin_values)
 
 
-for i in range(0,len(Ye)):
+for i in range(0,len(ye)):
     for j in range(0,len(ye_bins)):
-        if Ye[i] <= ye_bins[j]:
+        if ye[i] <= ye_bins[j]:
             ye_bin_values[j] += 1
             break
 
@@ -93,8 +116,21 @@ for i in rows[-1]:
 y.pop(0)
 print(y)
 
+if ejecta_type == "left_grid_only":
+    print("ejecta_type = left_grid_only")
+elif ejecta_type == "on_grid_only":
+    print("ejecta_type = on_grid_only")
+else:
+    print("ejecta_type = combined")
+
 for j in range(0,len(ye_bins)):
-    ye_bin_values[j] += y[j]
+    if ejecta_type == "left_grid_only":
+        ye_bin_values[j] *= 1e-8
+    elif ejecta_type == "on_grid_only":
+        ye_bin_values[j] = y[j]
+    else:
+        ye_bin_values[j] *= 1e-8                   
+        ye_bin_values[j] += y[j]
 
 fig, ax = plt.subplots()
 index = np.arange(20)
@@ -115,6 +151,7 @@ for label in  ax.xaxis.get_ticklabels()[::2]:
 
 ax.set_yscale('log')
 
-plt.xlabel(r"$Ye$",fontsize=15)
-plt.ylabel(r'Unbound Particles',fontsize=15)
-plt.savefig("ye_hist.pdf",rasterized=False)
+plt.xlabel(r"$ye$",fontsize=15)
+plt.ylabel(r'Unbound Mass $(M_\odot)$',fontsize=15)
+#plt.savefig("ye_hist.pdf",rasterized=False)
+plt.savefig("ye_hist_" + str(ejecta_type) + "_" + str(theta_max) + "_" + sys.argv[2] + ".pdf",rasterized=False)

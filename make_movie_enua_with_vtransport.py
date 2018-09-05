@@ -7,6 +7,33 @@ import matplotlib.pyplot as plt
 import pylab as py
 import os
 import sys
+from math import *
+import math
+
+import matplotlib.lines as mlines
+
+def abline(slope, intercept):
+    """Plot a line from slope and intercept"""
+    axes = plt.gca()
+    x_vals = np.array(axes.get_xlim())
+    y_vals = intercept + slope * x_vals
+    plt.plot(x_vals, y_vals, '--', color='white')
+
+def newline(p1, p2):
+    ax = plt.gca()
+    xmin, xmax = ax.get_xbound()
+
+    if(p2[0] == p1[0]):
+        xmin = xmax = p1[0]
+        ymin, ymax = ax.get_ybound()
+    else:
+        ymax = p1[1]+(p2[1]-p1[1])/(p2[0]-p1[0])*(xmax-p1[0])
+        ymin = p1[1]+(p2[1]-p1[1])/(p2[0]-p1[0])*(xmin-p1[0])
+
+    l = mlines.Line2D([xmin,xmax], [ymin,ymax])
+    ax.add_line(l)
+    return l
+
 
 pgf_with_rc_fonts = {"pgf.texsystem": "pdflatex"}
 matplotlib.rcParams.update(pgf_with_rc_fonts)
@@ -18,22 +45,26 @@ from pylab import figure,clf,rcParams,FixedLocator,subplot,contourf,contour,axis
 # File options
 filedir = "./"
 outputdir = filedir
-filepath = filedir+str(sys.argv[1])
+filepath1 = filedir+str(sys.argv[1])
 filepath2 = filedir+str(sys.argv[2])
 filepath3 = filedir+str(sys.argv[3])
+filepath4 = filedir+str(sys.argv[4])
+filepath5 = filedir+str(sys.argv[5])
+filepath6 = filedir+str(sys.argv[6])
 SkipToStep = 0
-FilePrefix = str(sys.argv[1])
 Fscale = 1.
 F0 = 0
 colouraxis = zeros([100])
 for i in range(0, 100):
-    colouraxis[i] = 0 + i*0.5/99.
-#LegendTag = [0,10,20,30,40,50,60,70,80]
-LegendTag = [0,0.1,0.2,0.3,0.4,0.5]
-LegendName = "Ye"
+    colouraxis[i] = -20 + i*10/99.
+
+LegendTag = [-20,-18,-16,-14,-12,-10,-8,-6,-4,-2,0,2,4,6,8,10,12,14]
+#LegendTag = [0,0.1,0.2,0.3,0.4,0.5]
+LegendName = "$\\log_{10}(E)$"
+
 #LegendName = "$Y_e$"
 cmapname = 'RdBu'
-useLog = 0
+useLog = 1
 
 # Plotting options
 XMin = -220.
@@ -41,6 +72,10 @@ XMax = 220
 YMin = -220
 YMax = 220
 bgcolor = 'black'
+
+RMAX = (XMax - XMin)**2 + (YMax - YMin)**2
+THETA = float(sys.argv[5])
+
 
                                   
 # Function calibrated for SliceData in SpEC                                                                                                                                   
@@ -147,7 +182,7 @@ rcParams['ytick.labelsize']  = 'medium'
 #rcParams['ytick.direction']  = 'in'
 #rcParams['axes.linewidth'] = 3
 
-f = open(filepath,'r')
+f = open(filepath1,'r')
 #line = f.readline()
 #str_input = line.split()
 f2 = open(filepath2,'r')
@@ -156,6 +191,16 @@ str_input = line.split()
 f3 = open(filepath3,'r')
 line = f3.readline()
 str_input = line.split()
+f4 = open(filepath3,'r')
+line = f4.readline()
+str_input = line.split()
+f5 = open(filepath3,'r')
+line = f5.readline()
+str_input = line.split()
+f6 = open(filepath3,'r')
+line = f6.readline()
+str_input = line.split()
+
 
 if SkipToStep>0:
     Nskip = SkipToStep*(Nx+1)*Ny
@@ -192,25 +237,38 @@ for t in range(SkipToStep,Nt-1):
     while(NextTime <= LastTime and NextTime >= 0.):
         mDummy,NextTime = GetNextSlice(f,Nx,Ny)
 
-    X = []
+    mData4,dummyTime = GetNextSlice(f4,Nx,Ny)
+    while(NextTime <= LastTime and NextTime >= 0.):
+        mDummy,NextTime = GetNextSlice(f,Nx,Ny)
+
+    mData5,dummyTime = GetNextSlice(f5,Nx,Ny)
+    while(NextTime <= LastTime and NextTime >= 0.):
+        mDummy,NextTime = GetNextSlice(f,Nx,Ny)
+
+    mData6,dummyTime = GetNextSlice(f6,Nx,Ny)
+    while(NextTime <= LastTime and NextTime >= 0.):
+        mDummy,NextTime = GetNextSlice(f,Nx,Ny)
+
+    X = mData[:,:,0]*1.475
     Y = []
 
-    if str(sys.argv[4]) == "xz":
-        X = mData[:,:,0]*1.475
+    if str(sys.argv[7]) == "xz":
         Y = mData[:,:,2]*1.475
-    elif str(sys.argv[4]) == "xy":    
-        X = mData[:,:,0]*1.475
+    elif str(sys.argv[7]) == "xy":    
         Y = mData[:,:,1]*1.475
-    elif str(sys.argv[4]) == "yz":    
-        X = mData[:,:,1]*1.475
-        Y = mData[:,:,2]*1.475
     else:
-        print("only xz,yz,xy slices supported")
+        print("only xz and xy slices supported")
         exit
 
-    F = mData[:,:,3]*Fscale
-    F2 = mData2[:,:,3]*Fscale
-    F3 = mData3[:,:,3]*Fscale
+    E = mData[:,:,3]*Fscale
+    Fx = mData2[:,:,3]*Fscale
+    Fy = mData3[:,:,3]*Fscale
+    a = mData4[:,:,3]*Fscale #lapse
+    Bx = mData5[:,:,3]*Fscale #shiftx
+    By = mData6[:,:,3]*Fscale #shifty
+
+    vx = a*Fx/E - Bx
+    vy = a*Fy/E - By
 
     fig, axes = plt.subplots(nrows=1, ncols=1)
     fig.set_size_inches((24,12))
@@ -220,8 +278,8 @@ for t in range(SkipToStep,Nt-1):
     else:
         im2 = contourf(X, Y, F+F0, colouraxis,cmap=cmapname)
 
-    im3 = contour(X,Y,F2,6,linewidths=5,locator=ticker.LogLocator())
-    contour(X,Y,F3,1,colors='black',linewidths=5)
+    im3 = plt.quiver(X,Y,vx,vy)
+ #   contour(X,Y,F3,1,colors='black',linewidths=5)
 
     plt.xlabel("$X [km]$",fontsize=20,color=bgcolor)
     plt.ylabel("$Y [km]$",fontsize=20,color=bgcolor)
@@ -250,17 +308,22 @@ for t in range(SkipToStep,Nt-1):
     cbar2 = fig.colorbar(im2, ticks=LegendTag)
 #   cbar2.set_label(label=LegendName,fontsize=36,color=bgcolor)
 #   cbar3 = fig.colorbar(im3, cax=cbar_ax3)#, orientation="horizontal")
-    cbar3 = fig.colorbar(im3,drawedges=False)#, orientation="horizontal")
+#    cbar3 = fig.colorbar(im3,drawedges=False)#, orientation="horizontal")
     outputname = outputdir+"/"+FilePrefix+"%04d"%t+".jpg"
-    cbar3.ax.tick_params(labelsize=15) 
+#    cbar3.ax.tick_params(labelsize=15) 
     cbar2.ax.tick_params(labelsize=15) 
-    cbar3.outline.set_visible(False)
+#    cbar3.outline.set_visible(False)
     #cbar3.ax.get_children()[4].set_linewidths(5.0)
     #    cbar3.ax.set_title('Rho')
     #    cbar2.ax.set_title('Ye')
     cbar3.set_label('Rho', labelpad=-20, y=1.075, rotation=0)
     cbar2.set_label('Ye', labelpad=-20, y=1.075, rotation=0)
 #   plt.subplots_adjust(left=0.15, bottom=0.15, top=0.85, right=0.85)
+#    newline([0,0],[RMAX*cos(THETA),RMAX*sin(THETA)])
+#    newline([0,0],[RMAX*cos(THETA + pi/2.),RMAX*sin(THETA + pi/2.)])
+
+    abline(tan( math.radians(90 - THETA)),0)
+    abline(-tan( math.radians(90 - THETA) ), 0)
     plt.savefig(outputname)
     plt.close(fig)
 
