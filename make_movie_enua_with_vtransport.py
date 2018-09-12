@@ -9,40 +9,20 @@ import os
 import sys
 from math import *
 import math
-
 import matplotlib.lines as mlines
 
-def abline(slope, intercept):
-    """Plot a line from slope and intercept"""
-    axes = plt.gca()
-    x_vals = np.array(axes.get_xlim())
-    y_vals = intercept + slope * x_vals
-    plt.plot(x_vals, y_vals, '--', color='white')
-
-def newline(p1, p2):
-    ax = plt.gca()
-    xmin, xmax = ax.get_xbound()
-
-    if(p2[0] == p1[0]):
-        xmin = xmax = p1[0]
-        ymin, ymax = ax.get_ybound()
-    else:
-        ymax = p1[1]+(p2[1]-p1[1])/(p2[0]-p1[0])*(xmax-p1[0])
-        ymin = p1[1]+(p2[1]-p1[1])/(p2[0]-p1[0])*(xmin-p1[0])
-
-    l = mlines.Line2D([xmin,xmax], [ymin,ymax])
-    ax.add_line(l)
-    return l
-
+if len(sys.argv) != 9:
+    print("make_movie... E Fx Fy A Bx By <xz/xy> theta")
+    sys.exit(0)
 
 pgf_with_rc_fonts = {"pgf.texsystem": "pdflatex"}
 matplotlib.rcParams.update(pgf_with_rc_fonts)
-
 
 from pylab import zeros,log10,linspace
 from pylab import figure,clf,rcParams,FixedLocator,subplot,contourf,contour,axis
 
 # File options
+FilePrefix = "ENu"
 filedir = "./"
 outputdir = filedir
 filepath1 = filedir+str(sys.argv[1])
@@ -53,7 +33,7 @@ filepath5 = filedir+str(sys.argv[5])
 filepath6 = filedir+str(sys.argv[6])
 SkipToStep = 0
 Fscale = 1.
-F0 = 0
+E0 = 1e-20
 colouraxis = zeros([100])
 for i in range(0, 100):
     colouraxis[i] = -20 + i*10/99.
@@ -74,11 +54,8 @@ YMax = 220
 bgcolor = 'black'
 
 RMAX = (XMax - XMin)**2 + (YMax - YMin)**2
-THETA = float(sys.argv[5])
-
-
+THETA = float(sys.argv[8])
                                   
-# Function calibrated for SliceData in SpEC                                                                                                                                   
 def GetSliceDims(filename):
     f = open(filename,'r')
     Nx = 0
@@ -140,7 +117,7 @@ def GetNextSlice(f,Nx,Ny):
 
 
 print("Get file dimensions")
-Nt,Nx,Ny = GetSliceDims(filepath)
+Nt,Nx,Ny = GetSliceDims(filepath1)
 print(Nt,Nx,Ny)
 
 # Plotting...
@@ -155,52 +132,25 @@ dX = (XMax-XMin)/4.
 Xlab = ["%.0f"%XMin,"%.0f"%(XMin+dX),"%.0f"%(XMin+2*dX),"%.0f"%(XMin+3*dX),"%.0f"%XMax]
 dY = (YMax-YMin)/4.
 Ylab = ["%.0f"%YMin,"%.0f"%(YMin+dY),"%.0f"%(YMin+2*dY),"%.0f"%(YMin+3*dY),"%.0f"%YMax]
-
-##rcParams['figure.figsize']  = 12, 12
-#rcParams['lines.linewidth'] = 1.5
-#rcParams['font.family']     = 'serif'
-#rcParams['font.weight']     = 'bold'
-rcParams['font.size']       = 30
-#rcParams['font.sans-serif'] = 'serif'
-##rcParams['text.usetex']     = True
-#rcParams['axes.linewidth']  = 1.5
-#rcParams['axes.titlesize']  = 'medium'
-#rcParams['axes.labelsize']  = 'medium'
-#rcParams['xtick.major.size'] = 8
-#rcParams['xtick.minor.size'] = 4
-#rcParams['xtick.major.pad']  = 8
-#rcParams['xtick.minor.pad']  = 8
-#rcParams['xtick.color']      = bgcolor
 rcParams['xtick.labelsize']  = 'medium'
-#rcParams['xtick.direction']  = 'in'
-#rcParams['ytick.major.size'] = 8
-#rcParams['ytick.minor.size'] = 4
-#rcParams['ytick.major.pad']  = 8
-#rcParams['ytick.minor.pad']  = 8
-#rcParams['ytick.color']      = bgcolor
 rcParams['ytick.labelsize']  = 'medium'
-#rcParams['ytick.direction']  = 'in'
-#rcParams['axes.linewidth'] = 3
 
 f = open(filepath1,'r')
-#line = f.readline()
-#str_input = line.split()
 f2 = open(filepath2,'r')
 line = f2.readline()
 str_input = line.split()
 f3 = open(filepath3,'r')
 line = f3.readline()
 str_input = line.split()
-f4 = open(filepath3,'r')
+f4 = open(filepath4,'r')
 line = f4.readline()
 str_input = line.split()
-f5 = open(filepath3,'r')
+f5 = open(filepath5,'r')
 line = f5.readline()
 str_input = line.split()
-f6 = open(filepath3,'r')
+f6 = open(filepath6,'r')
 line = f6.readline()
 str_input = line.split()
-
 
 if SkipToStep>0:
     Nskip = SkipToStep*(Nx+1)*Ny
@@ -266,64 +216,36 @@ for t in range(SkipToStep,Nt-1):
     a = mData4[:,:,3]*Fscale #lapse
     Bx = mData5[:,:,3]*Fscale #shiftx
     By = mData6[:,:,3]*Fscale #shifty
-
-    vx = a*Fx/E - Bx
-    vy = a*Fy/E - By
-
+    vx = a[:,:]*Fx[:,:]/(E[:,:]+E0)-Bx[:,:]
+    vy = a[:,:]*Fy[:,:]/(E[:,:]+E0)-By[:,:]
+    # for i in range(0,len(a)):
+    #     print(E[i,i])
+    #     vxi = a[i]*Fx[i]/(E[i]+E0) - Bx[i]
+    #     vyi = a[i]*Fy[i]/(E[i]+E0) - By[i]
+    #     #print(vxi, vyi)
+    #     vx.append(vxi)
+    #     vy.append(vyi)
     fig, axes = plt.subplots(nrows=1, ncols=1)
     fig.set_size_inches((24,12))
     sp=subplot(111)
-    if useLog == 1:
-        im2 = contourf(X, Y, log10(F+F0), colouraxis,cmap=cmapname)
-    else:
-        im2 = contourf(X, Y, F+F0, colouraxis,cmap=cmapname)
+    im2 = contourf(X, Y, log10(E+E0), colouraxis,cmap=cmapname)
 
-    im3 = plt.quiver(X,Y,vx,vy)
- #   contour(X,Y,F3,1,colors='black',linewidths=5)
+    skip=(slice(None,None,4),slice(None,None,4))
+    im3 = plt.quiver(X[skip], Y[skip], vx[skip], vy[skip], color='black', headwidth=3)# scale = 1)# headlength=2)
 
+#    im3 = plt.quiver(X,Y,vx,vy,linewidths=20)
     plt.xlabel("$X [km]$",fontsize=20,color=bgcolor)
     plt.ylabel("$Y [km]$",fontsize=20,color=bgcolor)
 
     dt = 2.*t*0.00496
-#   titlestring = "t - $t_{\\rm merge}$ = %.02f ms" % (dt)
-#   plt.title(titlestring,fontsize=36,color=bgcolor)
-
     ax = plt.gca()
-#   ax.xaxis.set_major_locator(majorLocatorX)
-#   ax.xaxis.set_minor_locator(minorLocatorX)
-#   ax.xaxis.set_ticklabels(Xlab,fontsize=32,color=bgcolor)
-#   ax.xaxis.set_tick_params(which='minor', length=5, width=2)
-#   ax.xaxis.set_tick_params(which='major', width=3,length=10)
-#   ax.yaxis.set_major_locator(majorLocatorY)
-#   ax.yaxis.set_minor_locator(minorLocatorY)
-#   ax.yaxis.set_ticklabels(Ylab,fontsize=32,color=bgcolor)
-#   ax.yaxis.set_tick_params(which='minor', length=5, width=2)
-#   ax.yaxis.set_tick_params(which='major', width=3,length=10)
 
     axis([XMin, XMax, YMin, YMax])
 
-#   cbar_ax2 = fig.add_axes([0.88, 0.15, 0.03, 0.7])
-#   cbar_ax3 = fig.add_axes([0.11, 0.15, 0.03, 0.7])
-#   cbar2 = fig.colorbar(im2, ticks=LegendTag,cax=cbar_ax2)
     cbar2 = fig.colorbar(im2, ticks=LegendTag)
-#   cbar2.set_label(label=LegendName,fontsize=36,color=bgcolor)
-#   cbar3 = fig.colorbar(im3, cax=cbar_ax3)#, orientation="horizontal")
-#    cbar3 = fig.colorbar(im3,drawedges=False)#, orientation="horizontal")
     outputname = outputdir+"/"+FilePrefix+"%04d"%t+".jpg"
-#    cbar3.ax.tick_params(labelsize=15) 
     cbar2.ax.tick_params(labelsize=15) 
-#    cbar3.outline.set_visible(False)
-    #cbar3.ax.get_children()[4].set_linewidths(5.0)
-    #    cbar3.ax.set_title('Rho')
-    #    cbar2.ax.set_title('Ye')
-    cbar3.set_label('Rho', labelpad=-20, y=1.075, rotation=0)
-    cbar2.set_label('Ye', labelpad=-20, y=1.075, rotation=0)
-#   plt.subplots_adjust(left=0.15, bottom=0.15, top=0.85, right=0.85)
-#    newline([0,0],[RMAX*cos(THETA),RMAX*sin(THETA)])
-#    newline([0,0],[RMAX*cos(THETA + pi/2.),RMAX*sin(THETA + pi/2.)])
-
-    abline(tan( math.radians(90 - THETA)),0)
-    abline(-tan( math.radians(90 - THETA) ), 0)
+    cbar2.set_label('E', labelpad=-20, y=1.075, rotation=0)
     plt.savefig(outputname)
     plt.close(fig)
 

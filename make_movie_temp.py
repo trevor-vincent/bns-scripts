@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,7 +24,7 @@ Fscale = 1.
 F0 = 0
 colouraxis = zeros([100])
 for i in range(0, 100):
-    colouraxis[i] = 0 + i*100./99.
+    colouraxis[i] = 0 + i*50./99.
 LegendTag = [0,10,20,30,40,50,60,70,80]
 #LegendTag = [0,0.1,0.2,0.3,0.4,0.5]
 LegendName = "Temp"
@@ -160,6 +162,20 @@ for t in range(SkipToStep,Nt-1):
     Z = mData[:,:,2]*1.475
     F = mData[:,:,3]*Fscale
 
+    if str(sys.argv[3]) == "xz":
+        X = mData[:,:,0]*1.475
+        Y = mData[:,:,2]*1.475
+    elif str(sys.argv[3]) == "xy":    
+        X = mData[:,:,0]*1.475
+        Y = mData[:,:,1]*1.475
+    elif str(sys.argv[3]) == "yz":
+        X = mData[:,:,1]*1.475
+        Y = mData[:,:,2]*1.475        
+    else:
+        print("only xz and xy slices supported")
+        exit
+
+    
     fig, axes = plt.subplots(nrows=1, ncols=1)
     fig.set_size_inches((12,12))
     sp=subplot(111)

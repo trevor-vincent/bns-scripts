@@ -10,13 +10,12 @@ import sys
 pgf_with_rc_fonts = {"pgf.texsystem": "pdflatex"}
 matplotlib.rcParams.update(pgf_with_rc_fonts)
 
-
 from pylab import zeros,log10,linspace
 from pylab import figure,clf,rcParams,FixedLocator,subplot,contourf,axis
 
-if len(sys.argv) != 3:
-    print("make_movie_rho0.py file axis_length")
-    exit
+if len(sys.argv) < 4:
+    print("make_movie_rho0.py file axis_length slice <optional coloraxis minimum> <optional coloraxis maximum>")
+    sys.exit()
 
 # File options
 filedir = "./"
@@ -27,12 +26,19 @@ FilePrefix = str(sys.argv[1])
 Fscale = 1.
 F0 = 1.e-13
 colouraxis = zeros([100])
+
+colmin = -13
+colmax = 13
+if len(sys.argv) == 6:
+    colmin = float(sys.argv[4])
+    colmax = float(sys.argv[5])
+
 for i in range(0, 100):
-    colouraxis[i] = -13. + i*7./99.
+    colouraxis[i] = colmin + i*colmax/99.
+
+
 LegendTag = [-13,-12,-12,-10,-8,-6,-4,-2,0,2,4,6,8,10,12,14]
-#LegendTag = [0,0.1,0.2,0.3,0.4,0.5]
 LegendName = "$\\log_{10}(Rho0B)$"
-#LegendName = "$Y_e$"
 cmapname = 'inferno'
 useLog = 1
 
@@ -178,6 +184,20 @@ for t in range(SkipToStep,Nt-1):
     X = mData[:,:,0]*1.475
     Y = mData[:,:,1]*1.475
     Z = mData[:,:,2]*1.475
+
+    if str(sys.argv[3]) == "xz":
+        X = mData[:,:,0]*1.475
+        Y = mData[:,:,2]*1.475
+    elif str(sys.argv[3]) == "xy":    
+        X = mData[:,:,0]*1.475
+        Y = mData[:,:,1]*1.475
+    elif str(sys.argv[3]) == "yz":
+        X = mData[:,:,1]*1.475
+        Y = mData[:,:,2]*1.475        
+    else:
+        print("only xz and xy slices supported")
+        exit
+
     F = mData[:,:,3]*Fscale
 
     fig, axes = plt.subplots(nrows=1, ncols=1)

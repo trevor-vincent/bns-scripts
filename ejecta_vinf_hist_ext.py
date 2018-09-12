@@ -13,7 +13,6 @@ import sys
 pgf_with_rc_fonts = {"pgf.texsystem": "pdflatex"}
 matplotlib.rcParams.update(pgf_with_rc_fonts)
 
-
 #plt.rc('text', usetex=False)
 #plt.rc('font', family='serif')
 plt.rcParams["figure.facecolor"] = "white"
@@ -154,3 +153,7 @@ ax.set_yscale('log')
 plt.xlabel(r"$v_\infty$",fontsize=15)
 plt.ylabel(r'Unbound Mass $(M_\odot)$',fontsize=15)
 plt.savefig("vinf_hist_" + str(ejecta_type) + "_" + str(theta_max) + "_" + sys.argv[2] + ".pdf",rasterized=False)
+
+f = open("vinf_hist_" + str(ejecta_type) + "_" + str(theta_max) + "_" + sys.argv[2] + ".dat","w+")
+for j in range(0,len(vinf_bin_values)):
+    f.write(str(vinf_bins[j]) + " " + str(vinf_bin_values[j]) + "\n")

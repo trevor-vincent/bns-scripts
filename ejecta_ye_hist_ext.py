@@ -155,3 +155,7 @@ plt.xlabel(r"$ye$",fontsize=15)
 plt.ylabel(r'Unbound Mass $(M_\odot)$',fontsize=15)
 #plt.savefig("ye_hist.pdf",rasterized=False)
 plt.savefig("ye_hist_" + str(ejecta_type) + "_" + str(theta_max) + "_" + sys.argv[2] + ".pdf",rasterized=False)
+
+f = open("ye_hist_" + str(ejecta_type) + "_" + str(theta_max) + "_" + sys.argv[2] + ".dat","w+")
+for j in range(0,len(ye_bin_values)):
+    f.write(str(ye_bins[j]) + " " + str(ye_bin_values[j]) + "\n")

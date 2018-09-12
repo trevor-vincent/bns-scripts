@@ -27,7 +27,7 @@ do
     find . -name "ParticlesFromOutflow*" -exec cat {} \; >> ../../ParticlesFromOutFlowCat.dat
     cd ../../
 done
-sed -i '/^#/ d' ParticlesFromOutFlowCat.dat
 
+sed -i '/^#/ d' ParticlesFromOutFlowCat.dat
 cp "./${1}/Run/MatterObservers/Vinf.agr" .
 cp "./${1}/Run/MatterObservers/Ye.agr" .
