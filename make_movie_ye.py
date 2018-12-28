@@ -31,10 +31,11 @@ cmapname = 'inferno'
 useLog = 0
 
 # Plotting options
-XMin = -180.
-XMax = 180
-YMin = -180
-YMax = 180
+axis_length = float(sys.argv[2])
+XMin = -axis_length
+XMax = axis_length
+YMin = -axis_length
+YMax = axis_length
 bgcolor = 'black'
 
                                   
@@ -155,9 +156,24 @@ for t in range(SkipToStep,Nt-1):
         mDummy,NextTime = GetNextSlice(f,Nx,Ny)
         t = t+1
 
+
     X = mData[:,:,0]*1.475
     Y = mData[:,:,1]*1.475
     Z = mData[:,:,2]*1.475
+
+    if str(sys.argv[3]) == "xz":
+        X = mData[:,:,0]*1.475
+        Y = mData[:,:,2]*1.475
+    elif str(sys.argv[3]) == "xy":    
+        X = mData[:,:,0]*1.475
+        Y = mData[:,:,1]*1.475
+    elif str(sys.argv[3]) == "yz":
+        X = mData[:,:,1]*1.475
+        Y = mData[:,:,2]*1.475        
+    else:
+        print("only xz and xy slices supported")
+        exit
+
     F = mData[:,:,3]*Fscale
 
     fig, axes = plt.subplots(nrows=1, ncols=1)

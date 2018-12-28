@@ -1,0 +1,19 @@
+echo "Done ApplyObservers"
+
+CURRENT=$PWD
+for d in $(ls -d */ | grep TimeParallel); 
+do
+echo "Starting $d"; 
+cd $CURRENT/$d
+echo $PWD
+Mtime=$(cat Rho.pvd | grep timestep | head -n1 | cut -d '=' -f2 | cut -d ' ' -f1 | sed 's/"//g')
+cd $CURRENT
+echo "module load visit && visit -cli -nowin -s /scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts/rho_visit_with_args.py $CURRENT/$d/Rho.visit rho_$Mtime" >> commands.txt
+done
+
+echo "Done Create commands.txt"
+
+scontrol show hostname ${SLURM_JOB_NODELIST} > ./node_list_${SLURM_JOB_ID}
+parallel --jobs $3 --sshloginfile ./node_list_${SLURM_JOB_ID} :::: commands.txt
+
+echo "Done Parallel commands.txt"

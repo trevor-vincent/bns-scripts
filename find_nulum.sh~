@@ -1,0 +1,3 @@
+cat Lev0_CD/Run/NeutrinoObservers/NeutrinoFluxeAtBoundary.dat | tail -n1 | cut -d ' ' -f6
+
+mass=$(cat ./$1/Run/NeutrinoObservers/NeutrinoFluxeAtBoundary.dat | tail -n 1 | cut -d ' ' -f21) && touch $1_nualum_$mass.dat

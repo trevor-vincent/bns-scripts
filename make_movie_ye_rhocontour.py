@@ -137,8 +137,20 @@ def GetNextSlice(f,Nx,Ny):
 
 print("Get file dimensions")
 Nt,Nx,Ny = GetSliceDims(filepath)
-print(Nt,Nx,Ny)
 
+if str(sys.argv[4]) == "xz":
+    Nx = 201
+    Ny = 101
+elif str(sys.argv[4]) == "xy":    
+    Nx = 201
+    Ny = 201
+elif str(sys.argv[4]) == "yz":
+    Nx = 201
+    Ny = 101
+else:
+    print("only xz,yz,xy slices")
+
+print(Nt,Nx,Ny)
 # Plotting...
 figure(figsize=(12,24))
 clf()
@@ -239,7 +251,9 @@ for t in range(SkipToStep,Nt-1):
     F = mData[:,:,3]*Fscale
     F2 = mData2[:,:,3]*Fscale
     F3 = mData3[:,:,3]*Fscale
-
+    #print((F))
+    #print((X))
+    #print((Y))
     fig, axes = plt.subplots(nrows=1, ncols=1)
     fig.set_size_inches((24,12))
     sp=subplot(111)
@@ -250,50 +264,19 @@ for t in range(SkipToStep,Nt-1):
 
     im3 = contour(X,Y,F2,6,linewidths=5,locator=ticker.LogLocator())
     contour(X,Y,F3,1,colors='black',linewidths=5)
-
     plt.xlabel("$X [km]$",fontsize=20,color=bgcolor)
     plt.ylabel("$Y [km]$",fontsize=20,color=bgcolor)
-
     dt = 2.*t*0.00496
-#   titlestring = "t - $t_{\\rm merge}$ = %.02f ms" % (dt)
-#   plt.title(titlestring,fontsize=36,color=bgcolor)
-
     ax = plt.gca()
-#   ax.xaxis.set_major_locator(majorLocatorX)
-#   ax.xaxis.set_minor_locator(minorLocatorX)
-#   ax.xaxis.set_ticklabels(Xlab,fontsize=32,color=bgcolor)
-#   ax.xaxis.set_tick_params(which='minor', length=5, width=2)
-#   ax.xaxis.set_tick_params(which='major', width=3,length=10)
-#   ax.yaxis.set_major_locator(majorLocatorY)
-#   ax.yaxis.set_minor_locator(minorLocatorY)
-#   ax.yaxis.set_ticklabels(Ylab,fontsize=32,color=bgcolor)
-#   ax.yaxis.set_tick_params(which='minor', length=5, width=2)
-#   ax.yaxis.set_tick_params(which='major', width=3,length=10)
-
     axis([XMin, XMax, YMin, YMax])
-
-#   cbar_ax2 = fig.add_axes([0.88, 0.15, 0.03, 0.7])
-#   cbar_ax3 = fig.add_axes([0.11, 0.15, 0.03, 0.7])
-#   cbar2 = fig.colorbar(im2, ticks=LegendTag,cax=cbar_ax2)
     cbar2 = fig.colorbar(im2, ticks=LegendTag)
-#   cbar2.set_label(label=LegendName,fontsize=36,color=bgcolor)
-#   cbar3 = fig.colorbar(im3, cax=cbar_ax3)#, orientation="horizontal")
     cbar3 = fig.colorbar(im3,drawedges=False)#, orientation="horizontal")
     outputname = outputdir+"/"+FilePrefix+"%04d"%t+".jpg"
     cbar3.ax.tick_params(labelsize=15) 
     cbar2.ax.tick_params(labelsize=15) 
     cbar3.outline.set_visible(False)
-    #cbar3.ax.get_children()[4].set_linewidths(5.0)
-    #    cbar3.ax.set_title('Rho')
-    #    cbar2.ax.set_title('Ye')
     cbar3.set_label('Rho', labelpad=-20, y=1.075, rotation=0)
     cbar2.set_label('Ye', labelpad=-20, y=1.075, rotation=0)
-#   plt.subplots_adjust(left=0.15, bottom=0.15, top=0.85, right=0.85)
-#    newline([0,0],[RMAX*cos(THETA),RMAX*sin(THETA)])
-#    newline([0,0],[RMAX*cos(THETA + pi/2.),RMAX*sin(THETA + pi/2.)])
-
-#    abline(tan( math.radians(90 - THETA)),0)
-#    abline(-tan( math.radians(90 - THETA) ), 0)
     plt.savefig(outputname)
     plt.close(fig)
 

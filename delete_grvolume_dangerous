@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "We will delete all GrVolumeData files in directory ${PWD}, is that okay?"
+read ans
+
+if [ $ans == "1" ]; then
+
+find . -type d -name "*GrVolumeData" -print 2>/dev/null | while read line; do
+    echo "Removing folder '$line'"
+    rm -rf $line
+done
+
+else
+    echo "Not deleting"
+fi

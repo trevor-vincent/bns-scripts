@@ -154,6 +154,10 @@ plt.xlabel(r"$v_\infty$",fontsize=15)
 plt.ylabel(r'Unbound Mass $(M_\odot)$',fontsize=15)
 plt.savefig("vinf_hist_" + str(ejecta_type) + "_" + str(theta_max) + "_" + sys.argv[2] + ".pdf",rasterized=False)
 
+total_mass = 0.
 f = open("vinf_hist_" + str(ejecta_type) + "_" + str(theta_max) + "_" + sys.argv[2] + ".dat","w+")
 for j in range(0,len(vinf_bin_values)):
     f.write(str(vinf_bins[j]) + " " + str(vinf_bin_values[j]) + "\n")
+    total_mass = total_mass + vinf_bin_values[j]
+f1 = open("vinf_hist_" + str(ejecta_type) + "_" + str(theta_max) + "_" + sys.argv[2] + " " + str(total_mass) + ".dat","w+")
+f1.write("\n")

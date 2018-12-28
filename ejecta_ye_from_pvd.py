@@ -86,10 +86,12 @@ zbounds = float(sys.argv[3])
 theta_max = float(sys.argv[4])
 
 reader0 = vtkXMLStructuredGridReader()
-for i in range(0,len(vtk_files)):
+len_vtk_files = len(vtk_files)
+for i in range(0,len_vtk_files):
     reader0.SetFileName(vtk_files[i])
     reader0.Update()
     print("Parsing file " + str(vtk_files[i]))
+    print("Done " + str(i) + " / " + str(len(vtk_files)))
     data0 = reader0.GetOutput()
     Ye = VN.vtk_to_numpy(data0.GetPointData().GetArray("Ye"))
     Minusu_tH = VN.vtk_to_numpy(data0.GetPointData().GetArray("Minusu_tH"))
@@ -97,26 +99,26 @@ for i in range(0,len(vtk_files)):
     get_ye_hist(Ye, Minusu_tH, xbounds, ybounds, zbounds, theta_max, ye_bin_values, ye_polar_bin_values, ye_equa_bin_values)
     get_vinf_hist(Rho, Minusu_tH, xbounds, ybounds, zbounds, theta_max, vinf_bin_values, vinf_polar_bin_values, vinf_equa_bin_values)
 
-f = open("ye_on_grid_hyvolumedata_theta_" + str(theta_max) + "_all.dat")
-for i in range(0,len(ye_bin_values)):
-    f.write(str(ye_bins[j]) + " " + str(ye_bin_values[j]))
+f = open("ye_on_grid_hyvolumedata_theta_" + str(theta_max) + "_all.dat","w+")
+for j in range(0,len(ye_bin_values)):
+    f.write(str(ye_bins[j]) + " " + str(ye_bin_values[j]) + "\n")
 
-f = open("ye_on_grid_hyvolumedata_theta_" + str(theta_max) + "_polar.dat")
-for i in range(0,len(ye_bin_values)):
-    f.write(str(ye_bins[j]) + " " + str(ye_polar_bin_values[j]))
+f = open("ye_on_grid_hyvolumedata_theta_" + str(theta_max) + "_polar.dat","w+")
+for j in range(0,len(ye_bin_values)):
+    f.write(str(ye_bins[j]) + " " + str(ye_polar_bin_values[j]) + "\n")
 
-f = open("ye_on_grid_hyvolumedata_theta_" + str(theta_max) + "_equa.dat")
-for i in range(0,len(ye_bin_values)):
-    f.write(str(ye_bins[j]) + " " + str(ye_equa_bin_values[j]))
+f = open("ye_on_grid_hyvolumedata_theta_" + str(theta_max) + "_equa.dat","w+")
+for j in range(0,len(ye_bin_values)):
+    f.write(str(ye_bins[j]) + " " + str(ye_equa_bin_values[j]) + "\n")
 
-f = open("vinf_on_grid_hyvolumedata_theta_" + str(theta_max) + "_all.dat")
-for i in range(0,len(vinf_bin_values)):
-    f.write(str(vinf_bins[j]) + " " + str(vinf_bin_values[j]))
+f = open("vinf_on_grid_hyvolumedata_theta_" + str(theta_max) + "_all.dat","w+")
+for j in range(0,len(vinf_bin_values)):
+    f.write(str(vinf_bins[j]) + " " + str(vinf_bin_values[j]) + "\n")
 
-f = open("vinf_on_grid_hyvolumedata_theta_" + str(theta_max) + "_polar.dat")
-for i in range(0,len(vinf_bin_values)):
-    f.write(str(vinf_bins[j]) + " " + str(vinf_polar_bin_values[j]))
+f = open("vinf_on_grid_hyvolumedata_theta_" + str(theta_max) + "_polar.dat","w+")
+for j in range(0,len(vinf_bin_values)):
+    f.write(str(vinf_bins[j]) + " " + str(vinf_polar_bin_values[j]) + "\n")
 
-f = open("vinf_on_grid_hyvolumedata_theta_" + str(theta_max) + "_equa.dat")
-for i in range(0,len(vinf_bin_values)):
-    f.write(str(vinf_bins[j]) + " " + str(vinf_equa_bin_values[j]))
+f = open("vinf_on_grid_hyvolumedata_theta_" + str(theta_max) + "_equa.dat","w+")
+for j in range(0,len(vinf_bin_values)):
+    f.write(str(vinf_bins[j]) + " " + str(vinf_equa_bin_values[j]) + "\n")

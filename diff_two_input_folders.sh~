@@ -1,0 +1,16 @@
+#!/bin/bash
+
+clear
+FOLDER_NEW=/RQexec/tvincent/BNS_Disks_project/Evolutions/nsns_id_dd2_m1.2_m1.44_d33_eccred0_eccred1_eccred2/Ev/Lev0_AB-Merger/Lev0_AE
+FOLDER_WORKING=/RQexec/tvincent/BNS_Disks_project/Evolutions/nsns_id_dd2_m1.44_m1.44_d33_eccred0_eccred1/Ev/Lev0_AC-Merger/Lev0_AE
+cd $FOLDER_NEW
+for file in $(ls | grep .input | grep -v MakeSubmit | grep -v VisualizeRho); do 
+echo "****************************************************"
+echo "          Do you want to diff $file (no=0/yes=1)?"
+echo "****************************************************"
+read ANS
+if [ $ANS -eq 1 ]
+then
+diff -w $FOLDER_NEW/$file $FOLDER_WORKING/$file
+fi
+done

@@ -14,6 +14,12 @@ matplotlib.rcParams.update(pgf_with_rc_fonts)
 from pylab import zeros,log10,linspace
 from pylab import figure,clf,rcParams,FixedLocator,subplot,contourf,axis
 
+
+if len(sys.argv) < 4:
+    print("make_movie_temp.py file axis_length slice")
+    sys.exit()
+
+
 # File options
 filedir = "./"
 outputdir = filedir
@@ -39,8 +45,7 @@ YMin = -180
 YMax = 180
 bgcolor = 'black'
 
-                                  
-# Function calibrated for SliceData in SpEC                                                                                                                                   
+# Function calibrated for SliceData in SpEC
 def GetSliceDims(filename):
     f = open(filename,'r')
     Nx = 0
@@ -74,8 +79,11 @@ def GetSliceDims(filename):
 def GetNextSlice(f,Nx,Ny):
     mOutput = zeros([Ny,Nx,4])
     line = f.readline()
-    while line[0]=='#':
-        line = f.readline()
+    try: 
+        while line[0]=='#':
+            line = f.readline()
+    except:
+        return mOutput,-1
     for j in range(0,Ny):
         for i in range(0,Nx):
             str_input = line.split()
@@ -95,7 +103,6 @@ def GetNextSlice(f,Nx,Ny):
     else:
         NextTime = -1.
     return mOutput,NextTime
-
 
 print("Get file dimensions")
 Nt,Nx,Ny = GetSliceDims(filepath)
@@ -152,10 +159,20 @@ for t in range(SkipToStep,Nt-1):
     LastTime = NextTime
     print("Stamp ",t," at time ",LastTime)
     mData,NextTime = GetNextSlice(f,Nx,Ny)
+    skipping = 0
     while(NextTime <= LastTime):
         print("Skipping stamp ",t," at time ",NextTime)
         mDummy,NextTime = GetNextSlice(f,Nx,Ny)
+        if NextTime==-1:
+            break
         t = t+1
+        skipping = 1
+
+    if NextTime == -1:
+        break
+    
+    if skipping == 1:
+        continue
 
     X = mData[:,:,0]*1.475
     Y = mData[:,:,1]*1.475

@@ -29,8 +29,8 @@ ejecta_ye_hist_ext.py "combined" "all" -1
 ejecta_ye_hist_ext.py "left_grid_only" "polar" $THETA
 ejecta_ye_hist_ext.py "left_grid_only" "equatorial" $THETA
 
-echo "Copying DataForMovies files "
-cp "${PWD}/${1}/Run/DataForMovies/"*.dat .
+#echo "Copying DataForMovies files "
+#cp "${PWD}/${1}/Run/DataForMovies/"*.dat .
 
-echo "Creating rhocontour "
-make_movie_ye_rhocontour_with_line.py Ye_vert.dat Rho0Phys_vert.dat UnboundFlagH_vert.dat xz $THETA
+#echo "Creating rhocontour "
+#make_movie_ye_rhocontour_with_line.py Ye_vert.dat Rho0Phys_vert.dat UnboundFlagH_vert.dat xz $THETA

@@ -1,3 +1,14 @@
+// -*- compile-command: "mpicc -o ../get_hists get_vinf_ye_on_grid_hists.c read_hyvolumedata_h5.c sds.c -std=c99 -lhdf5 -lm" -*-
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
+#include <math.h>
+#include <time.h>
+#include "read_hyvolumedata_h5.h"
+
+#ifndef M_PI
+#    define M_PI 3.14159265358979323846
+#endif
 
 double compute_dV
 (
@@ -12,10 +23,10 @@ double compute_dV
  double zextents
 )
 {
-  dx = 2*xbounds/(xextents - 1);
-  dy = 2*ybounds/(yextents - 1);
-  dz = 2*zbounds/(zextents - 1);
-  dV = dx*dy*dz;
+  double dx = 2*xbounds/(xextents - 1);
+  double dy = 2*ybounds/(yextents - 1);
+  double dz = 2*zbounds/(zextents - 1);
+  double dV = dx*dy*dz;
   
   if ((x >= -xbounds && x <= xbounds) &&
       (y >= -ybounds && y <= ybounds) &&
@@ -39,7 +50,7 @@ double compute_vinf
 )
 {
   double A = rho*(minusu_th - 1.);
-  double b = rho;
+  double B = rho;
   return  sqrt(1.-1./(1.+A/B)/(1.+A/B));
 }
 
@@ -70,7 +81,7 @@ ejecta_type_t get_ejecta_type
  double theta_max_deg
 )
 {           
-  if (theta < deg_to_rad(theta_max) || (theta > deg_to_rad(180 - theta_max_deg))){
+  if (theta_rad < deg_to_rad(theta_max_deg) || (theta_rad > deg_to_rad(180 - theta_max_deg))){
     return POLAR;
   }
 
@@ -79,7 +90,7 @@ ejecta_type_t get_ejecta_type
   }
 }
 
-      add_to_bin(ye[i], etype, ye_bins, ye_bin_values, ye_polar_bin_values, ye_equa_bin_values);
+      /* add_to_bin(ye[i], etype, ye_bins, ye_bin_values, ye_polar_bin_values, ye_equa_bin_values); */
 
 void add_to_bin
 (
@@ -95,7 +106,7 @@ void add_to_bin
 ){
   if (mass < mass_particle){
     double prob = mass/mass_particle;
-    double dev = rand();
+    double dev = rand() / (double)RAND_MAX;
     if (dev > prob){
       return;
     }
@@ -110,6 +121,7 @@ void add_to_bin
       else {
         scalar_equa_bin_values[i] += mass;
       }
+      break;
     }
   }  
 }
@@ -149,8 +161,8 @@ void get_hist
                              xbounds,ybounds,zbounds,
                              201,201,101);
       double mass = Rho[i]*dV;
-      add_to_bin(ye[i], mass, etype, ye_bins, ye_bin_values, ye_polar_bin_values, ye_equa_bin_values, num_bins);
-      add_to_bin(vinf, mass, etype, vinf_bins, vinf_bin_values, vinf_polar_bin_values, vinf_equa_bin_values, num_bins);
+      add_to_bin(ye[i], mass, 1e-8, etype, ye_bins, ye_bin_values, ye_polar_bin_values, ye_equa_bin_values, num_bins);
+      add_to_bin(vinf, mass, 1e-8, etype, vinf_bins, vinf_bin_values, vinf_polar_bin_values, vinf_equa_bin_values, num_bins);
     }
   }
 }
@@ -183,7 +195,7 @@ int main(int argc, char *argv[])
   int world_rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
-  
+  srand(time(NULL));   // should only be called once
   int num = get_number_of_h5_files();
   sds* file_list = init_file_list(num);
   get_file_list(file_list);
@@ -216,6 +228,22 @@ int main(int argc, char *argv[])
   double ye_polar_bin_values_reduced [20];
   double ye_equa_bin_values_reduced [20];
 
+  for (int i = 0; i < 20; i++){
+    ye_bin_values[i] = 0;
+    ye_polar_bin_values[i] = 0;
+    ye_equa_bin_values[i] = 0;
+    vinf_bin_values[i] = 0;
+    vinf_polar_bin_values[i] = 0;
+    vinf_equa_bin_values[i] = 0;
+    ye_bin_values_reduced[i] = 0;
+    ye_polar_bin_values_reduced[i] = 0;
+    ye_equa_bin_values_reduced[i] = 0;
+    vinf_bin_values_reduced[i] = 0;
+    vinf_polar_bin_values_reduced[i] = 0;
+    vinf_equa_bin_values_reduced[i] = 0;
+  }
+
+  
   double vinf_bins [] =
     {
      0.05,
@@ -272,21 +300,23 @@ int main(int argc, char *argv[])
   printf("xbounds, ybounds, zbounds = %.15f %15f %.15f\n", atof(argv[1]), atof(argv[2]), atof(argv[3]));
   
   for (int i = start; i <= end; i++){
+
     sds file = file_list[i];
+    printf("Parsing file %d = %s\n", i, file);
     int scalar_size = -1;
-    double* Rho = hyvolume_read_dataset(file, "/Rho/Step000000", "scalar", &scalar_size);
-    double* Ye = hyvolume_read_dataset(file, "Ye/Step000000", "scalar", &scalar_size);
-    double* Minusu_tH = hyvolume_read_dataset(file, "Minusu_tH/Step000000", "scalar", &scalar_size);
-    double* x = hyvolume_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
-    double* y = hyvolume_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
-    double* z = hyvolume_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
+    double* Rho = hyvolumedata_read_dataset(file, "/Rho/Step000000", "scalar", &scalar_size);
+    double* Ye = hyvolumedata_read_dataset(file, "Ye/Step000000", "scalar", &scalar_size);
+    double* Minusu_tH = hyvolumedata_read_dataset(file, "Minusu_tH/Step000000", "scalar", &scalar_size);
+    double* x = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
+    double* y = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
+    double* z = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
 
     get_hist
       (
        x,
        y,
        z,
-       ye,
+       Ye,
        Rho,
        Minusu_tH,
        scalar_size,

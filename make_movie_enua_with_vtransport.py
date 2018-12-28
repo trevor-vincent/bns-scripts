@@ -33,17 +33,17 @@ filepath5 = filedir+str(sys.argv[5])
 filepath6 = filedir+str(sys.argv[6])
 SkipToStep = 0
 Fscale = 1.
-E0 = 1e-20
+E0 = 1e-70
 colouraxis = zeros([100])
 for i in range(0, 100):
-    colouraxis[i] = -20 + i*10/99.
+    colouraxis[i] = -13 + i*7/99.
 
 LegendTag = [-20,-18,-16,-14,-12,-10,-8,-6,-4,-2,0,2,4,6,8,10,12,14]
 #LegendTag = [0,0.1,0.2,0.3,0.4,0.5]
 LegendName = "$\\log_{10}(E)$"
 
 #LegendName = "$Y_e$"
-cmapname = 'RdBu'
+cmapname = 'inferno'
 useLog = 1
 
 # Plotting options

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+find $PWD -name "Lev0*" | sort | tail -n 10 | tac | while read line; do
+if [ -f $line/Run/SpEC.out ]; then
+    cat $line/Run/SpEC.out | grep CPU | CpuUsage
+    exit
+fi
+done

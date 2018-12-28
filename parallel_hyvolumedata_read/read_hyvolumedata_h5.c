@@ -10,6 +10,7 @@
 #include <regex.h>
 #include "sds.h"
 #include "sdsalloc.h"
+#include "read_hyvolumedata_h5.h"
 
 int match(const char *string, const char *pattern)
 {

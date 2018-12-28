@@ -1,0 +1,1 @@
+cat $1 | gnuplot -e "set term pdf; set output 'plot.pdf'; plot '-' u $2:$3 w linespoints"
