@@ -96,6 +96,7 @@ for j in range(0,num_runs):
     print(run_labels[j])
     print(amr_it)
     print(big_ksp)
+    print(big_time)
     print(dof_1o3)
 
     if its_type == 'ksp':

@@ -178,8 +178,8 @@ for t in range(SkipToStep,Nt-1):
     if NextTime == -1:
         break
     
-    if skipping == 1:
-        continue
+#    if skipping == 1:
+#        continue
 
     X = mData[:,:,0]*1.475
     Y = mData[:,:,1]*1.475
@@ -231,11 +231,11 @@ for t in range(SkipToStep,Nt-1):
     cbar_ax2 = fig.add_axes([0.88, 0.15, 0.03, 0.7])
     cbar2 = fig.colorbar(im2, ticks=LegendTag,cax=cbar_ax2)
     cbar2.set_label(label=LegendName,fontsize=36,color=bgcolor)
-    outputname = outputdir+"/"+FilePrefix+"%04d"%t+".jpg"
+    outputname = "./Rho_" + str(dt) + ".jpg"
 
     plt.subplots_adjust(left=0.15, bottom=0.15, top=0.85, right=0.85)
     plt.savefig(outputname)
     plt.close(fig)
 
-cmd = "ffmpeg -f image2 -i "+outputdir+FilePrefix+"%04d.jpg -vf scale=720:720 -framerate 20 "+outputdir+FilePrefix+".mpg"
-os.system(cmd)
+#cmd = "ffmpeg -f image2 -i "+outputdir+FilePrefix+"%04d.jpg -vf scale=720:720 -framerate 20 "+outputdir+FilePrefix+".mpg"
+#os.system(cmd)

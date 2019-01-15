@@ -54,7 +54,7 @@ with io.open(file, mode='r',encoding='utf-8') as f:
             B = Rho[-1]
             if theta_max >= 0:
                 if ejecta_type != "left_grid_only":
-                    print("if theta_max >= 0, ejecta must be left_grid_only and not " + str(ejecta_type))
+                    print("if theta_max >= 0, ejecta must be on_grid_only and not " + str(ejecta_type))
                     sys.exit()
                 x = float(row[2])
                 y = float(row[3])
