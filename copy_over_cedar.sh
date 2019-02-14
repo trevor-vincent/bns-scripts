@@ -14,14 +14,14 @@ if [ "$#" -ne 1 ]; then
 fi
 
 if [ $1 -eq 1 ]; then
-rsync_bns "minerva01.aei.mpg.de:/scratch/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.32_eccred0_eccred1" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.32_MINERVA"
+rsync_bns "asfd minerva01.aei.mpg.de:/scratch/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.32_eccred0_eccred1" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.32_MINERVA"
 #rsync_bns "minerva01.aei.mpg.de:/scratch/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.56_eccred0_eccred1_eccred2" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.56_MINERVA"
 #rsync_bns "minerva01.aei.mpg.de:/scratch/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.44_eccred0_eccred1_eccred2" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.44_MINERVA"
 #rsync_bns "minerva01.aei.mpg.de:/scratch/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.44_m1.44_eccred0_eccred1_eccred2" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.44_m1.44_MINERVA"
 else
 #rsync_bns_no_vtk "minerva01.aei.mpg.de:/scratch/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.32_eccred0_eccred1" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.32_MINERVA"
 #rsync_bns_no_vtk "minerva01.aei.mpg.de:/scratch/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.56_eccred0_eccred1_eccred2" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.56_MINERVA"
-rsync_bns_no_vtk "minerva01.aei.mpg.de:/scratch/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.44_eccred0_eccred1_eccred2" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.44_MINERVA"
+rsync_bns_no_vtk "cedar.computecanada.ca:/home/tvincent/scratch/nsns_id_sfho_m1.2_m1.44_eccred0_eccred1_eccred2/Ev/Lev0_AB-Merger" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.2_m1.44_MINERVA/Ev/Lev0_AB-Merger"
 #rsync_bns_no_vtk "minerva01.aei.mpg.de:/scratch/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.44_m1.44_eccred0_eccred1_eccred2" "/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Evolutions/nsns_id_sfho_m1.44_m1.44_MINERVA"
 fi
 

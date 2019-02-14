@@ -1,0 +1,3 @@
+SCRIPTS="/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts"
+
+$SCRIPTS/d4est_sort_runs_aux | sort -g -k2,2 -k3,3

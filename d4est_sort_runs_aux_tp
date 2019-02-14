@@ -1,0 +1,8 @@
+SCRIPTS="/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts"
+
+find . -name "d4est_points.log" | while read line;
+do
+dir=$(dirname $line)
+tp_3m=$(cat $line | tail -n3 | head -n 1 | cut -d ' ' -f4)
+echo $dir $tp_3m
+done

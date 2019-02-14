@@ -1,0 +1,11 @@
+SCRIPTS="/scratch/p/pfeiffer/tvincent/BNS_Disks_project/Scripts"
+
+find . -name "d4est_region_all_norms_u.log" | while read line;
+do
+l2_slope="$(tail -n +3 $line | awk -f $SCRIPTS/d4est_linreg_l2.awk)"
+linf_slope="$(tail -n +3 $line | awk -f $SCRIPTS/d4est_linreg_linf.awk)"
+dir=$(dirname $line)
+l2_err=$(cat $line | tail -n 1 | cut -d ' ' -f4)
+linf_err=$(cat $line | tail -n 1 | cut -d ' ' -f5)
+echo $dir $linf_slope $linf_err $l2_err $l2_slope 
+done
