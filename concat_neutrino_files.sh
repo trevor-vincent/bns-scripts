@@ -27,3 +27,5 @@ cat $(cat folders_cropped_rho0_xy.txt) > neutrinofluxe_total.dat
 sed -i 's/NeutrinoFluxeAtBoundary.dat/NeutrinoFluxxAtBoundary.dat/g' folders_cropped_rho0_xy.txt
 
 cat $(cat folders_cropped_rho0_xy.txt) > neutrinofluxx_total.dat
+
+rm -f folders*.txt

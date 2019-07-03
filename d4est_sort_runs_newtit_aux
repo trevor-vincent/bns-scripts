@@ -1,0 +1,9 @@
+find . -name "d4est_solver_newton_petsc_iteration_info.log" | while read line;
+do
+dir=$(dirname $line)
+sum="$(awk -F ' ' '{sum += $9} END {print sum}' $line)"
+its="$(awk -F ' ' '{sum += $7} END {print sum}' $line)"
+tp_3m="$(cat ${dir}/d4est_points.log | tail -n3 | head -n 1 | cut -d ' ' -f4)"
+dof="$(cat ${dir}/d4est_region_all_norms_u.log | tail -n 1 | cut -d ' ' -f2)"
+echo $dir $its $dof $sum $tp_3m
+done

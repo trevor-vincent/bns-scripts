@@ -121,6 +121,7 @@ void add_to_bin
       else {
         scalar_equa_bin_values[i] += mass;
       }
+      break;
     }
   }  
 }
@@ -227,6 +228,22 @@ int main(int argc, char *argv[])
   double ye_polar_bin_values_reduced [20];
   double ye_equa_bin_values_reduced [20];
 
+  for (int i = 0; i < 20; i++){
+    ye_bin_values[i] = 0;
+    ye_polar_bin_values[i] = 0;
+    ye_equa_bin_values[i] = 0;
+    vinf_bin_values[i] = 0;
+    vinf_polar_bin_values[i] = 0;
+    vinf_equa_bin_values[i] = 0;
+    ye_bin_values_reduced[i] = 0;
+    ye_polar_bin_values_reduced[i] = 0;
+    ye_equa_bin_values_reduced[i] = 0;
+    vinf_bin_values_reduced[i] = 0;
+    vinf_polar_bin_values_reduced[i] = 0;
+    vinf_equa_bin_values_reduced[i] = 0;
+  }
+
+  
   double vinf_bins [] =
     {
      0.05,
@@ -291,8 +308,8 @@ int main(int argc, char *argv[])
     double* Ye = hyvolumedata_read_dataset(file, "Ye/Step000000", "scalar", &scalar_size);
     double* Minusu_tH = hyvolumedata_read_dataset(file, "Minusu_tH/Step000000", "scalar", &scalar_size);
     double* x = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
-    double* y = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
-    double* z = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
+    double* y = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "y", &scalar_size);
+    double* z = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "z", &scalar_size);
 
     get_hist
       (

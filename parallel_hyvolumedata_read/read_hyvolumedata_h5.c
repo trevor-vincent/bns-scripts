@@ -28,7 +28,8 @@ hyvolumedata_read_dataset
  const char* file_name,
  const char* group_name,
  const char* dataset_name,
- int* size
+ int* size,
+ int* extents
 )
 {
   hid_t dataset_type = H5T_NATIVE_DOUBLE;
@@ -40,6 +41,12 @@ hyvolumedata_read_dataset
   
   /* Open an existing dataset. */
   hid_t dataset_id = H5Dopen2(group_id, dataset_name, H5P_DEFAULT);
+
+  hid_t attr_id;
+  if (extents != NULL)
+    attr_id = H5Aopen (group_id, "Extents", H5P_DEFAULT);
+
+  /* hid_t extents_data_set_id = H5Dopen2(group_id, "Extents", H5P_DEFAULT); */
   
   /* int size = H5Dget_storage_size(dataset_id); */
   hid_t dspace = H5Dget_space(dataset_id);
@@ -56,11 +63,33 @@ hyvolumedata_read_dataset
                      H5S_ALL,
                      H5P_DEFAULT,
                      dataset);
+
+  
   if (err < 0){
     printf("Problem reading h5 dataset, filename = %s, dataset = %s.\n", file_name, dataset_name);
     exit(1);
   }
-  
+
+  /* hsize_t adims = 3; */
+  /* hid_t memtype = H5Tarray_create (H5T_NATIVE_INT, 3, &adims); */
+  /* err = H5Tclose (memtype); */
+
+  if (extents != NULL){
+    err = H5Aread (attr_id, H5T_NATIVE_INT, (void*)&extents[0]);
+    if (err < 0){
+      printf("Problem reading h5 attribute, filename = %s, attribute = %s.\n", file_name, "Extents");
+      exit(1);
+    }
+    /* H5Tclose (memtype); */
+  }
+
+  if (extents != NULL){
+    err = H5Aclose (attr_id);
+    if (err < 0){
+      printf("Problem closing h5 attribute, filename = %s, dataset = %s.\n", file_name, "Extents");
+      exit(1);
+    }
+  }
   /* Close the dataset. */
   err = H5Dclose(dataset_id);
   if (err < 0){
@@ -68,12 +97,15 @@ hyvolumedata_read_dataset
     exit(1);
   }
 
+  
   /* Close the dataset. */
   err = H5Gclose(group_id);
   if (err < 0){
     printf("Problem closing h5 group, filename = %s, dataset = %s.\n", file_name, dataset_name);
     exit(1);
   }
+
+
 
   
   /* Close the file. */

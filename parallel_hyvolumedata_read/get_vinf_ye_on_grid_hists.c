@@ -43,6 +43,46 @@ double compute_dV
   }
 }
 
+void
+get_ijk
+(
+ int index,
+ int* i,
+ int* j,
+ int* k,
+ int nx,
+ int ny,
+ int nz
+)
+{  
+  *i = index % nx;
+  *j = ((index - *i)/nx) % ny;
+  *k = (((index -*i)/nx) - *j)/ny;
+}
+
+
+int
+is_it_ghost_zone
+(
+ int index,
+ int nx,
+ int ny,
+ int nz
+)
+{
+  int i,j,k;
+  get_ijk(index, &i, &j, &k, nx, ny, nz);
+  int icond = (i == 0 || i == 1 || i == 2 || i == nx - 1 || i == nx - 2 || i == nx - 3);
+  int jcond = (j == 0 || j == 1 || j == 2 || j == ny - 1 || j == ny - 2 || j == ny - 3);
+  int kcond = (k == 0 || k == 1 || k == 2 || k == nz - 1 || k == nz - 2 || k == nz - 3);
+  if (icond || jcond || kcond){
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 double compute_vinf
 (
  double rho,
@@ -148,6 +188,10 @@ void get_hist
  double* vinf_bin_values,
  double* vinf_polar_bin_values,
  double* vinf_equa_bin_values,
+ double r_min,
+ int nx,
+ int ny,
+ int nz,
  int num_bins
 )
 {
@@ -161,8 +205,12 @@ void get_hist
                              xbounds,ybounds,zbounds,
                              201,201,101);
       double mass = Rho[i]*dV;
+      double r = sqrt(x[i]*x[i] + y[i]*y[i] + z[i]*z[i]);
+      
+      if (r >= r_min && !is_it_ghost_zone(i,nx,ny,nz)){
       add_to_bin(ye[i], mass, 1e-8, etype, ye_bins, ye_bin_values, ye_polar_bin_values, ye_equa_bin_values, num_bins);
       add_to_bin(vinf, mass, 1e-8, etype, vinf_bins, vinf_bin_values, vinf_polar_bin_values, vinf_equa_bin_values, num_bins);
+      }
     }
   }
 }
@@ -293,8 +341,8 @@ int main(int argc, char *argv[])
     };
 
 
-  if (argc != 4){
-    printf("get_hist_exe <xbounds> <ybounds> <zbounds>\n");
+  if (argc != 5){
+    printf("get_hist_exe <xbounds> <ybounds> <zbounds> <r_min>\n");
     exit(1);
   }
   printf("xbounds, ybounds, zbounds = %.15f %15f %.15f\n", atof(argv[1]), atof(argv[2]), atof(argv[3]));
@@ -304,12 +352,13 @@ int main(int argc, char *argv[])
     sds file = file_list[i];
     printf("Parsing file %d = %s\n", i, file);
     int scalar_size = -1;
-    double* Rho = hyvolumedata_read_dataset(file, "/Rho/Step000000", "scalar", &scalar_size);
-    double* Ye = hyvolumedata_read_dataset(file, "Ye/Step000000", "scalar", &scalar_size);
-    double* Minusu_tH = hyvolumedata_read_dataset(file, "Minusu_tH/Step000000", "scalar", &scalar_size);
-    double* x = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
-    double* y = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
-    double* z = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size);
+    int extents [3];
+    double* Rho = hyvolumedata_read_dataset(file, "/Rho/Step000000", "scalar", &scalar_size, extents);
+    double* Ye = hyvolumedata_read_dataset(file, "Ye/Step000000", "scalar", &scalar_size,NULL);
+    double* Minusu_tH = hyvolumedata_read_dataset(file, "Minusu_tH/Step000000", "scalar", &scalar_size,NULL);
+   double* x = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "x", &scalar_size, NULL);
+    double* y = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "y", &scalar_size, NULL);
+    double* z = hyvolumedata_read_dataset(file, "GridToInertialFD--MappedCoords/Step000000", "z", &scalar_size, NULL);
 
     get_hist
       (
@@ -332,6 +381,10 @@ int main(int argc, char *argv[])
        &vinf_bin_values[0],
        &vinf_polar_bin_values[0],
        &vinf_equa_bin_values[0],
+       atof(argv[4]), /* rmin */
+       extents[0],
+       extents[1],
+       extents[2],
        num_bins
       );
     

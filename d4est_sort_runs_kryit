@@ -1,0 +1,7 @@
+find . -name "*iteration_info*" | while read line; do
+export RESI=$(cat $line | cut -d ' ' -f11 | head -n 1);
+export RESF=$(cat $line | cut -d ' ' -f11 | tail -n 1);
+export ITER=$(cat $line | cut -d ' ' -f10 | tail -n 1);
+export DOF=$(cat $line | cut -d ' ' -f8 | tail -n 1);
+printf "$line $DOF $ITER $RESI $RESF \n"
+done | sort -k5;

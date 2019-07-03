@@ -15,8 +15,8 @@ case "$choice" in
   * ) echo "invalid";;
 esac
 
-rm ParticlesFromOutFlowCat.dat
-touch ParticlesFromOutFlowCat.dat
+#rm ParticlesFromOutFlowCat.dat
+#touch ParticlesFromOutFlowCat.dat
 for f in $(cat folders_cropped.txt);
 do
 #    echo $(dirname $f)

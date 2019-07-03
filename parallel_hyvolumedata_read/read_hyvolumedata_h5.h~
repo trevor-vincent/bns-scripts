@@ -1,6 +1,7 @@
 #ifndef READ_HYVOLUMEDATA_H5_H
 #define READ_HYVOLUMEDATA_H5_H 
 
+#include "sds.h"
 
 /* This file was automatically generated.  Do not edit! */
 void destroy_file_list(sds *file_list,int num);

@@ -1,1 +1,1 @@
-FINDTHIS=$1 && for d in $(qt | tail -n+2 | cut -d 'c' -f1); do printf "$d" && dirname $(scontrol show job $d | grep Command | cut -d '=' -f2); done | grep $FINDTHIS | cut -d '/' -f1
+FINDTHIS=$1 && for d in $(squeue -u tvincent | tail -n+2 | cut -d 'c' -f1); do printf "$d" && dirname $(scontrol show job $d | grep Command | cut -d '=' -f2); done | grep $FINDTHIS | cut -d '/' -f1

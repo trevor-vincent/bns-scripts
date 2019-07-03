@@ -4,5 +4,8 @@ find . -name "d4est_points.log" | while read line;
 do
 dir=$(dirname $line)
 tp_3m=$(cat $line | tail -n3 | head -n 1 | cut -d ' ' -f4)
-echo $dir $tp_3m
+tp_0m=$(cat $line | tail -n4 | head -n 1 | cut -d ' ' -f4)
+tp_10m=$(cat $line | tail -n2 | head -n 1 | cut -d ' ' -f4)
+tp_100m=$(cat $line | tail -n1 | head -n 1 | cut -d ' ' -f4)
+echo $dir $tp_3m $tp_0m $tp_10m $tp_100m
 done
