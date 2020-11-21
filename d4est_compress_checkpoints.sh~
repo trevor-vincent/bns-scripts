@@ -1,8 +1,0 @@
-find $PWD -name "Checkpoints" -type d | while read line; do
-
-cd $line && cd ..
-echo $line
-tar -czf checkpoints_backup.tar.gz Checkpoints
-rm -rf VTK
-
-done
